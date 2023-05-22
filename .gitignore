@@ -8,3 +8,6 @@ separation_train
 val2017
 annotations
 seperated_images
+train2017
+test_images_category
+train_images_category
