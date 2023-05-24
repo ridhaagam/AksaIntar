@@ -62,7 +62,7 @@ class SecondActivity : ComponentActivity() {
         }
     }
 
-    private fun signOut() {
+    fun signOut() {
         googleSignInClient.signOut()
             .addOnCompleteListener(this, OnCompleteListener<Void?> {
                 finish()
@@ -79,7 +79,7 @@ fun SecondActivityContent(email: String, onSignOut: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Email: $email")
-            Button(onClick = { onSignOut }) {
+            Button(onClick = { onSignOut() }) {
                 Text(text = "Sign Out")
             }
         }
