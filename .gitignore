@@ -1,0 +1,13 @@
+# Ignored git upload files
+test_images
+train_images
+train_images.zip
+train_images.zip
+separation
+separation_train
+val2017
+annotations
+seperated_images
+train2017
+test_images_category
+train_images_category
