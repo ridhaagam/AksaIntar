@@ -28,6 +28,6 @@ Our model in this application is using MobileNetV2. We did some modification and
 <summary>Model Summary</summary>
 
 ```
-![](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/63e85928-37f4-4928-b1fc-12fb64f52070)
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/fe0ed442-8e18-44bf-81d8-093875ee03eb)
 ```
 </details>
