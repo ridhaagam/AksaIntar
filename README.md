@@ -19,4 +19,15 @@ People who have deficiencies must have their own challenges. An example of this 
 Part of machine learning in this application is detecting items. We utilize a dataset of nearby objects to build a model that can detect items. And developed it in TensorFlow-based machine learning solution. We use the MobileNetV2 type to modeling. 
 
 ### Dataset and Data Preparation 
-The dataset we use for this model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download)
+The dataset we use for this model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download). This dataset contains (jumlah gambar dalam dataset) images. 
+For modeling, we use 2000 images. We split the dataset into training set of 1600 images and testing set of 400 images. And we do a rescale and augmentation on the images. 
+
+### Modeling 
+Our model in this application is using MobileNetV2. We did some modification and adjustable to make the best model possible.
+<details>
+<summary>Model Summary</summary>
+
+```
+![](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/63e85928-37f4-4928-b1fc-12fb64f52070)
+```
+</details>
