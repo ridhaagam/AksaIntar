@@ -22,12 +22,41 @@ Part of machine learning in this application is detecting items. We utilize a da
 The dataset we use for this model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download). This dataset contains (jumlah gambar dalam dataset) images. 
 For modeling, we use 2000 images. We split the dataset into training set of 1600 images and testing set of 400 images. And we do a rescale and augmentation on the images. 
 
-### Modeling 
+### Model
 Our model in this application is using MobileNetV2. We did some modification and adjustable to make the best model possible.
 <details>
 <summary>Model Summary</summary>
 
-```
-![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/fe0ed442-8e18-44bf-81d8-093875ee03eb)
-```
+<img width="517" alt="Screenshot 2023-05-31 043402" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/db5ad9b0-eaf7-4ab2-a12e-4b24fd05db98">
+
 </details>
+
+<details>
+<summary>Model Flowchart</summary>
+
+<>
+
+</details>
+
+<details>
+<summary>Accuracy</summary>
+
+<img width="274" alt="Screenshot 2023-05-31 044543" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/4a6f85ee-e826-4acb-9903-160a24a88a64">
+
+</details>
+<details>
+<summary>Loss</summary>
+
+<img width="261" alt="Screenshot 2023-05-31 044653" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/4a6b5aa7-d8cd-4fd9-9b30-a7311094f0a5">
+
+</details>
+
+## MOBILE DEVELOPMENT
+
+### Overview
+As the Mobile Development team, we use native Kotlin and Android Studio to create our Android app. Our responsibilities is setting up the Android app environment, designing the user interface through Figma, and implementing both object detection and color detection features for the app's functionalities. And once the application is complete, we monitor and fix any issues found to ensure the application runs as it should.
+ 
+## CLOUD COMPUTING
+### Overview
+For the cloud computing path, we create an API for authentication and authorization of the apps. Then, to make it easier for users to login, we want to add Google Authentication. We use the Google Cloud Platform ( Compute Engine or cloud run  and Cloud Storage ) as the medium to deploy the project, and we may also use other third-party APIs as needed during development.
+
