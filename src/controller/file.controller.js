@@ -1,9 +1,11 @@
-const processFile = require("../middleware/upload");
+const processFile = require("../middleware/upload")
 const mysql = require('mysql')
-const { format } = require("util");
-const { Storage } = require("@google-cloud/storage");
-const storage = new Storage({ keyFilename: "aksa-intar-bbeb3b0fdd2e.json" });
-const bucket = storage.bucket("aksa-intar");
+const { format } = require("util")
+const { Storage } = require("@google-cloud/storage")
+const storage = new Storage({ keyFilename: "aksa-intar-bbeb3b0fdd2e.json" })
+const bucket = storage.bucket("aksa-intar")
+const sizeOf = require('buffer-image-size')
+const dateFormat = require('date-and-time')
 
 const connection = mysql.createConnection({
   host: '127.0.0.1',
@@ -21,9 +23,14 @@ const upload = async (req, res) => {
     }
 
     // Create a new blob in the bucket and upload the file data.
-    const blob = bucket.file(req.file.originalname);
+    const blob = bucket.file(req.body.name);
+    const dimensions = sizeOf(req.file.buffer)
+    const now = dateFormat.format(new Date(), "YYYY-MM-DD")
     const blobStream = blob.createWriteStream({
       resumable: false,
+      metadata: {
+        contentType: req.file.mimetype
+      }
     });
 
     blobStream.on("error", (err) => {
@@ -38,23 +45,23 @@ const upload = async (req, res) => {
 
       try {
         // Make the file public
-        await bucket.file(req.file.originalname).makePublic();
+        await bucket.file(req.body.name).makePublic();
       } catch {
         return res.status(500).send({
           message:
-            `Uploaded the file successfully: ${req.file.originalname}, but public access is denied!`,
+            `Uploaded the file successfully: ${req.body.name}, but public access is denied!`,
           url: publicUrl,
         });
       }
-      const query = "INSERT INTO main (name, link) values (?, ?)"
-      connection.query(query, [req.file.originalname, publicUrl], (err, rows, fields) => {
+      const query = "INSERT INTO main (file_name, height, width, date_captured, categories, file_url) values (?, ?, ?, ?, ?, ?)"
+      connection.query(query, [req.body.name, dimensions.height, dimensions.width, now, req.body.category, publicUrl], (err, rows, fields) => {
         if (err) {
-          bucket.file(req.file.originalname).delete()
+          bucket.file(req.body.name).delete()
           res.status(500).send({message: err.sqlMessage})
         } else {
           res.status(200).send({
-            message: "Uploaded the file successfully: " + req.file.originalname,
-            url: publicUrl,
+            message: "Uploaded the file successfully: " + req.body.name,
+            url: publicUrl
           });
         }
     })
@@ -68,7 +75,7 @@ const upload = async (req, res) => {
       });
     }
     res.status(500).send({
-      message: `Could not upload the file: ${req.file.originalname}. ${err}`,
+      message: `Could not upload the file: ${req.body.name}. ${err}`,
     });
   }
 };
