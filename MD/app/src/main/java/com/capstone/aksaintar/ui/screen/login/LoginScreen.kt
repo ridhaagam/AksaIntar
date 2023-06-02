@@ -1,7 +1,6 @@
-package com.capstone.aksaintar.screen
+package com.capstone.aksaintar.ui.screen
 
 import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -15,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.capstone.aksaintar.R
-import com.capstone.aksaintar.SecondActivity
 import com.capstone.aksaintar.ui.theme.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -45,8 +43,8 @@ fun LoginScreen(onSignIn: (GoogleSignInAccount?) -> Unit){
 //        loggedInState.value = true
 //        userEmailState.value = account.email ?: ""
 //
-//        // Navigasi ke SecondActivity setelah berhasil login
-//        val intent = Intent(context, SecondActivity::class.java)
+//        // Navigasi ke HomeActivity setelah berhasil login
+//        val intent = Intent(context, HomeActivity::class.java)
 //        intent.putExtra("email", account.email)
 //        context.startActivity(intent)
 //    }

@@ -1,4 +1,4 @@
-package com.capstone.aksaintar
+package com.capstone.aksaintar.ui.screen.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,14 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.capstone.aksaintar.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 
-class SecondActivity : ComponentActivity() {
+class HomeActivity : ComponentActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class SecondActivity : ComponentActivity() {
 
         setContent {
             val email = intent.getStringExtra("email") ?: ""
-            SecondActivityContent(email){
+            HomeActivityContent(email){
                 signOut()
             }
         }
@@ -49,13 +49,13 @@ class SecondActivity : ComponentActivity() {
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
             setContent {
-                SecondActivityContent( account.email ?: ""){
+                HomeActivityContent( account.email ?: ""){
                     signOut()
                 }
             }
         } else {
             setContent {
-                SecondActivityContent(""){
+                HomeActivityContent(""){
                     signOut()
                 }
             }
@@ -66,13 +66,13 @@ class SecondActivity : ComponentActivity() {
         googleSignInClient.signOut()
             .addOnCompleteListener(this, OnCompleteListener<Void?> {
                 finish()
-                startActivity(Intent(this@SecondActivity, MainActivity::class.java))
+                startActivity(Intent(this@HomeActivity, MainActivity::class.java))
             })
     }
 }
 
 @Composable
-fun SecondActivityContent(email: String, onSignOut: () -> Unit) {
+fun HomeActivityContent(email: String, onSignOut: () -> Unit) {
     Surface(color = MaterialTheme.colors.background) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -88,6 +88,6 @@ fun SecondActivityContent(email: String, onSignOut: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewSecondActivityContent() {
-    SecondActivityContent("johndoe@example.com"){}
+fun PreviewHomeActivityContent() {
+    HomeActivityContent("johndoe@example.com"){}
 }

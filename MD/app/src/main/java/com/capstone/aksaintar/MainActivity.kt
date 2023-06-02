@@ -8,11 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.capstone.aksaintar.screen.LoginScreen
+import com.capstone.aksaintar.ui.screen.LoginScreen
+import com.capstone.aksaintar.ui.screen.home.HomeActivity
 import com.capstone.aksaintar.ui.theme.AksaIntarTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -21,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 private const val RC_SIGN_IN = 123
+
 class MainActivity : ComponentActivity() {
 
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -68,7 +69,7 @@ class MainActivity : ComponentActivity() {
     private fun signInWithGoogle(account: GoogleSignInAccount?) {
         account?.let {
             val email = it.email ?: ""
-            val intent = Intent(this, SecondActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
         }
