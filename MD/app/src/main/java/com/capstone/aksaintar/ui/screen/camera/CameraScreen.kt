@@ -1,4 +1,4 @@
-package com.capstone.aksaintar.presentation
+package com.capstone.aksaintar.ui.screen.camera
 
 import android.Manifest
 import android.os.Build
@@ -26,8 +26,8 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel = hiltViewModel(),
+fun CameraScreen(
+    viewModel: CameraViewModel = hiltViewModel(),
 ) {
 
     val permission = if (Build.VERSION.SDK_INT <= 28) {

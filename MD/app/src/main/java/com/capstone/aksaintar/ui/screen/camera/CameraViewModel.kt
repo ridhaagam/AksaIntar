@@ -1,4 +1,4 @@
-package com.capstone.aksaintar.presentation
+package com.capstone.aksaintar.ui.screen.camera
 
 import android.content.Context
 import androidx.camera.view.PreviewView
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class CameraViewModel @Inject constructor(
     private val repository: CameraRepository
 ) : ViewModel() {
 
