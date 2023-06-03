@@ -58,10 +58,10 @@ fun CameraScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-
-        ) {
-//        we will show camera preview once all permissions are granted
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Show camera preview once all permissions are granted
         if (permissionState.allPermissionsGranted) {
             AndroidView(
                 factory = {
@@ -70,34 +70,71 @@ fun CameraScreen(
                     previewView
                 },
                 modifier = Modifier
-                    .height(screenHeight * 0.85f)
-                    .width(screenWidth)
+                    .fillMaxSize()
+
             )
         }
     }
 
     Box(
         modifier = Modifier
-            .height(screenHeight * 0.15f),
-        contentAlignment = Alignment.Center
+            .fillMaxWidth()
+            .height(screenHeight * 0.9f)
+
+        ,
+
+        contentAlignment = Alignment.BottomCenter // Mengatur contentAlignment menjadi BottomCenter
     ) {
-        IconButton(onClick = {
-            if (permissionState.allPermissionsGranted) {
-                viewModel.captureAndSaveImage(context)
-            } else {
-                Toast.makeText(context, "Please grant all permissions", Toast.LENGTH_LONG).show()
+        Row(
+            modifier = Modifier
+                .width(screenWidth),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {
+                    // TODO: Implement pick image from gallery functionality
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_photo_library_24),
+                    contentDescription = "Pick from Gallery",
+                    modifier = Modifier.size(40.dp),
+                    tint = Color.White,
+                )
             }
-        }) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_camera_alt_24),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(50.dp),
-                tint = Color.White,
-            )
+            IconButton(
+                onClick = {
+                    if (permissionState.allPermissionsGranted) {
+                        viewModel.captureAndSaveImage(context)
+                    } else {
+                        Toast.makeText(context, "Please grant all permissions", Toast.LENGTH_LONG).show()
+                    }
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_circle_24),
+                    contentDescription = "Capture",
+                    modifier = Modifier.size(70.dp),
+                    tint = Color.White,
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    // TODO: Implement flip camera functionality
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_flip_camera_android_24),
+                    contentDescription = "Flip Camera",
+                    modifier = Modifier.size(40.dp),
+                    tint = Color.White,
+                )
+            }
         }
-
     }
-
-
 }
+
+
+
