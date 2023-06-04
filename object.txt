@@ -1,0 +1,15 @@
+banana
+bed
+bus
+car
+cat
+clock
+dog
+kite
+motorcycle
+orange
+oven
+scissors
+stop sign
+traffic light
+umbrella
