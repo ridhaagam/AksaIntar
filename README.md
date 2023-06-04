@@ -30,6 +30,11 @@ Part of machine learning in this application is detecting items. We utilize a da
 The dataset we use for this model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download). This dataset contains (jumlah gambar dalam dataset) images. 
 For modeling, we use 2000 images. We split the dataset into training set of 1600 images and testing set of 400 images. And we do a rescale and augmentation on the images. 
 
+<details>
+<summary>Dataset</summary>
+You can take a look at our filtered dataset here: https://drive.google.com/drive/folders/16VpKYq1d1T67tmIX2h-GHPJzYjYUAb9w?usp=sharing
+</details>
+
 ### Model
 Our model in this application is using MobileNetV2. We did some modification and adjustable to make the best model possible.
 <details>
