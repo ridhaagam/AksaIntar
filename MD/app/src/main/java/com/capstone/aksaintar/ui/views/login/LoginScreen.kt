@@ -1,4 +1,4 @@
-package com.capstone.aksaintar.ui.screen.login
+package com.capstone.aksaintar.ui.views.login
 
 import android.app.Activity
 import androidx.compose.foundation.BorderStroke

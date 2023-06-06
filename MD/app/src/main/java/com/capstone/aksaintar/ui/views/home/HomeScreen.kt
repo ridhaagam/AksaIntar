@@ -1,4 +1,4 @@
-package com.capstone.aksaintar.ui.screen.home
+package com.capstone.aksaintar.ui.views.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package com.capstone.aksaintar.ui.screen.profile
+package com.capstone.aksaintar.ui.views.profile
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

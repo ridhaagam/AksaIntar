@@ -18,9 +18,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.capstone.aksaintar.ui.navigation.NavigationItem
 import com.capstone.aksaintar.ui.navigation.Screen
-import com.capstone.aksaintar.ui.screen.camera.CameraScreen
-import com.capstone.aksaintar.ui.screen.home.HomeScreen
-import com.capstone.aksaintar.ui.screen.profile.ProfileScreen
+import com.capstone.aksaintar.ui.views.detection.ImagePicker
+import com.capstone.aksaintar.ui.views.home.HomeScreen
+import com.capstone.aksaintar.ui.views.profile.ProfileScreen
 
 
 @Composable
@@ -33,7 +33,7 @@ fun AksaIntarApp(
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Camera.route) {
+            if (currentRoute != Screen.Detection.route) {
                 BottomBar(navController)
             }
         },
@@ -47,7 +47,7 @@ fun AksaIntarApp(
             composable(Screen.Home.route) {
                 HomeScreen(
                     navToCameraScreen = {
-                        navController.navigate(Screen.Camera.route) {
+                        navController.navigate(Screen.Detection.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -57,8 +57,8 @@ fun AksaIntarApp(
                     }
                 )
             }
-            composable(Screen.Camera.route) {
-                CameraScreen()
+            composable(Screen.Detection.route) {
+                ImagePicker()
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()
