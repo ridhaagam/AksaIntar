@@ -5,8 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,16 +20,34 @@ import com.capstone.aksaintar.ui.navigation.NavigationItem
 import com.capstone.aksaintar.ui.navigation.Screen
 import com.capstone.aksaintar.ui.views.detection.ImagePicker
 import com.capstone.aksaintar.ui.views.home.HomeScreen
+import com.capstone.aksaintar.ui.views.login.LoginScreen
 import com.capstone.aksaintar.ui.views.profile.ProfileScreen
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
 fun AksaIntarApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    startGoogleSignIn: () -> Unit,
+    googleAccount: StateFlow<GoogleSignInAccount?>
 ) {
+    val account by googleAccount.collectAsState(initial = null)
+    val signedInAccount by rememberSaveable { mutableStateOf<GoogleSignInAccount?>(null) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    LaunchedEffect(account) {
+        if (account != null) {
+            navController.navigate(Screen.Home.route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                restoreState = true
+                launchSingleTop = true
+            }
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -41,12 +59,15 @@ fun AksaIntarApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = Screen.Login.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(
+                    email = account?.displayName,
+
                     navToCameraScreen = {
+                        println(account?.displayName)
                         navController.navigate(Screen.Detection.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -62,6 +83,21 @@ fun AksaIntarApp(
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()
+            }
+            composable(Screen.Login.route){
+                LoginScreen(
+                    onSignIn = {},
+                    navigateToHomeScreen = { // <-- fungsi navigateToHomeScreen yang diteruskan ke LoginScreen
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            restoreState = true
+                            launchSingleTop = true
+                        }
+                    },
+                    startGoogleSignIn = startGoogleSignIn
+                )
             }
 
         }

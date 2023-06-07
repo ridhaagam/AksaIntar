@@ -1,12 +1,19 @@
 package com.capstone.aksaintar.ui.views.login
 
 import android.app.Activity
+import android.content.ContentValues.TAG
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -18,14 +25,35 @@ import com.capstone.aksaintar.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 
 private const val RC_SIGN_IN = 123
+private const val TAG = "LoginScreen"
+
 
 @Composable
 fun LoginScreen(
-    onSignIn: (GoogleSignInAccount?) -> Unit
+    onSignIn: (GoogleSignInAccount?) -> Unit,
+    navigateToHomeScreen: () -> Unit,
+    startGoogleSignIn: () -> Unit
 ) {
-    val context = LocalContext.current
+
+//    val context = LocalContext.current
+//    val activity = LocalContext.current as ComponentActivity
+//    val resultLauncher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//        if (result.resultCode == Activity.RESULT_OK) {
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+//            try {
+//                val account = task.getResult(ApiException::class.java)
+//                onSignIn(account)
+//                navigateToHomeScreen()
+//            } catch (e: ApiException) {
+//                // Google Sign In failed, update UI appropriately
+//                Log.w(TAG, "Google sign in failed", e)
+//                // ...
+//            }
+//        }
+//    }
 
     Column(
         modifier = Modifier,
@@ -47,13 +75,14 @@ fun LoginScreen(
                 backgroundColor = Color.White
             ),
             onClick = {
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build()
-
-                val googleSignInClient = GoogleSignIn.getClient(context, gso)
-                val signInIntent = googleSignInClient.signInIntent
-                (context as Activity).startActivityForResult(signInIntent, RC_SIGN_IN)
+                      startGoogleSignIn()
+//                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                    .requestEmail()
+//                    .build()
+//
+//                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+//                val signInIntent = googleSignInClient.signInIntent
+//                resultLauncher.launch(signInIntent)
             },
             modifier = Modifier
                 .width(338.dp)
@@ -92,6 +121,8 @@ fun LoginScreen(
 @Composable
 fun DefaultPreview() {
     LoginScreen(
-        onSignIn = {}
+        onSignIn = {},
+        navigateToHomeScreen = {},
+        startGoogleSignIn = {}
     )
 }
