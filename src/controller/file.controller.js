@@ -23,7 +23,7 @@ const upload = async (req, res) => {
     }
 
     // Create a new blob in the bucket and upload the file data.
-    const blob = bucket.file(req.body.name);
+    const blob = bucket.file(req.file.originalname);
     const dimensions = sizeOf(req.file.buffer)
     const now = dateFormat.format(new Date(), "YYYY-MM-DD")
     const blobStream = blob.createWriteStream({
@@ -45,22 +45,22 @@ const upload = async (req, res) => {
 
       try {
         // Make the file public
-        await bucket.file(req.body.name).makePublic();
+        await bucket.file(req.file.originalname).makePublic();
       } catch {
         return res.status(500).send({
           message:
-            `Uploaded the file successfully: ${req.body.name}, but public access is denied!`,
+            `Uploaded the file successfully: ${req.file.originalname}, but public access is denied!`,
           url: publicUrl,
         });
       }
       const query = "INSERT INTO main (file_name, height, width, date_captured, categories, file_url) values (?, ?, ?, ?, ?, ?)"
-      connection.query(query, [req.body.name, dimensions.height, dimensions.width, now, req.body.category, publicUrl], (err, rows, fields) => {
+      connection.query(query, [req.file.originalname, dimensions.height, dimensions.width, now, req.body.category, publicUrl], (err, rows, fields) => {
         if (err) {
-          bucket.file(req.body.name).delete()
+          bucket.file(req.file.originalname).delete()
           res.status(500).send({message: err.sqlMessage})
         } else {
           res.status(200).send({
-            message: "Uploaded the file successfully: " + req.body.name,
+            message: "Uploaded the file successfully: " + req.file.originalname,
             url: publicUrl
           });
         }
@@ -75,7 +75,7 @@ const upload = async (req, res) => {
       });
     }
     res.status(500).send({
-      message: `Could not upload the file: ${req.body.name}. ${err}`,
+      message: `Could not upload the file: ${req.file.originalname}. ${err}`,
     });
   }
 };
