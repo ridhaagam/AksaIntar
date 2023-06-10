@@ -56,10 +56,13 @@ object TensorFLowHelper {
             }
         }
         val classes = arrayOf(
-            "Banana", "Bed", "Bus", "Car", "Kucing", "Clock", "Dog",
-            "Kite", "Motorcycle", "Orange", "Oven", "Scissors",
-            "Stop Sign", "Traffic Light", "Umbrella"
+            "airplane", "banana", "bear", "bed", "bench", "bird", "boat", "broccoli", "bus", "cake",
+            "car", "cat", "cell phone", "clock", "cow", "dog", "donut", "elephant", "fire hydrant",
+            "giraffe", "horse", "hot dog", "kite", "motorcycle", "orange", "oven", "person", "pizza",
+            "refrigerator", "sandwich", "scissors", "sheep", "sink", "stop sign", "suitcase",
+            "teddy bear", "toilet", "traffic light", "train", "truck", "umbrella", "vase", "zebra"
         )
+
         callback.invoke(classes[maxPos])
 
         // Releases model resources if no longer used.
