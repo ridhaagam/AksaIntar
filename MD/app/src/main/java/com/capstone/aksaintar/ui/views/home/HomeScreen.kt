@@ -13,6 +13,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 @Composable
 fun HomeScreen(
     email: String?,
-    navToCameraScreen: () -> Unit
+    navToCameraScreen: () -> Unit,
+    navToUploadScreen: () -> Unit,
+    navToColorScreen: () -> Unit
 ) {
 
     Column(
@@ -59,9 +63,9 @@ fun HomeScreen(
             onClick = navToCameraScreen
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ButtonOutlined(text = "Color Detection") {}
+        ButtonOutlined(text = "Color Detection", onClick = navToColorScreen)
         Spacer(modifier = Modifier.height(20.dp))
-        ButtonOutlined(text = "Contribution") {}
+        ButtonOutlined(text = "Contribution", onClick = navToUploadScreen)
 
     }
 
@@ -80,6 +84,7 @@ fun ButtonOutlined(text: String, onClick: () -> Unit) {
         modifier = Modifier
             .width(338.dp)
             .height(56.dp)
+            .semantics { testTag = "outlinedButton-$text" }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -96,6 +101,8 @@ fun ButtonOutlined(text: String, onClick: () -> Unit) {
 fun HomeScreenPreview() {
     HomeScreen(
         email = "",
-        navToCameraScreen = {}
+        navToCameraScreen = {},
+        navToUploadScreen = {},
+        navToColorScreen = {}
     )
 }

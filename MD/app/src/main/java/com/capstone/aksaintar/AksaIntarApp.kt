@@ -1,5 +1,7 @@
 package com.capstone.aksaintar
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +20,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.capstone.aksaintar.ui.navigation.NavigationItem
 import com.capstone.aksaintar.ui.navigation.Screen
+import com.capstone.aksaintar.ui.views.color.ColorScreen
+import com.capstone.aksaintar.ui.views.contributor.UploadScreen
 import com.capstone.aksaintar.ui.views.detection.ImagePicker
 import com.capstone.aksaintar.ui.views.home.HomeScreen
 import com.capstone.aksaintar.ui.views.login.LoginScreen
@@ -26,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.flow.StateFlow
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AksaIntarApp(
     modifier: Modifier = Modifier,
@@ -75,11 +80,37 @@ fun AksaIntarApp(
                             launchSingleTop = true
                             restoreState = true
                         }
+                    },
+                    navToUploadScreen = {
+
+                        navController.navigate(Screen.Upload.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    navToColorScreen = {
+
+                        navController.navigate(Screen.Color.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
             }
             composable(Screen.Detection.route) {
                 ImagePicker()
+            }
+            composable(Screen.Upload.route){
+                UploadScreen()
+            }
+            composable(Screen.Color.route){
+                ColorScreen()
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()
