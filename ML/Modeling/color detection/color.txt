@@ -1,0 +1,11 @@
+val classes = arrayOf(
+    "black",
+    "blue",
+    "brown",
+    "green",
+    "pink",
+    "red",
+    "silver",
+    "white",
+    "yellow"
+)
