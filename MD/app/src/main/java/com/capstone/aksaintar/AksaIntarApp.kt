@@ -1,5 +1,7 @@
 package com.capstone.aksaintar
 
+import android.app.Activity
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
@@ -28,6 +30,14 @@ import com.capstone.aksaintar.ui.views.login.LoginScreen
 import com.capstone.aksaintar.ui.views.profile.ProfileScreen
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.flow.StateFlow
+import androidx.activity.OnBackPressedDispatcherOwner
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -36,14 +46,22 @@ fun AksaIntarApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startGoogleSignIn: () -> Unit,
-    googleAccount: StateFlow<GoogleSignInAccount?>
+    googleAccount: StateFlow<GoogleSignInAccount?>,
+    context: Context
 ) {
     val account by googleAccount.collectAsState(initial = null)
     val signedInAccount by rememberSaveable { mutableStateOf<GoogleSignInAccount?>(null) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val email = rememberSaveable { mutableStateOf<String?>(null) }
+
+
+    BackHandler(enabled = currentRoute != Screen.Login.route) {
+        navController.popBackStack()
+    }
     LaunchedEffect(account) {
         if (account != null) {
+            email.value = account?.displayName ?: "Guest" // Update nilai email saat pengguna sign in dengan akun Google
             navController.navigate(Screen.Home.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
@@ -51,15 +69,17 @@ fun AksaIntarApp(
                 restoreState = true
                 launchSingleTop = true
             }
+        } else {
+            email.value = "Guest" // Set nilai email sebagai "Guest" saat pengguna sign out
         }
     }
 
     Scaffold(
-        bottomBar = {
-            if (currentRoute != Screen.Detection.route) {
-                BottomBar(navController)
-            }
-        },
+//        bottomBar = {
+//            if (currentRoute != Screen.Detection.route) {
+//                BottomBar(navController)
+//            }
+//        },
         modifier = modifier
     ) { innerPadding ->
         NavHost(
@@ -69,48 +89,67 @@ fun AksaIntarApp(
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(
-                    email = account?.displayName,
+                    email = email,
 
                     navToCameraScreen = {
                         println(account?.displayName)
                         navController.navigate(Screen.Detection.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+//                            popUpTo(navController.graph.findStartDestination().id) {
+//                                saveState = true
+//                            }
+//                            launchSingleTop = true
+//                            restoreState = true
                         }
                     },
                     navToUploadScreen = {
 
                         navController.navigate(Screen.Upload.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+//                            popUpTo(navController.graph.findStartDestination().id) {
+//                                saveState = true
+//                            }
+//                            launchSingleTop = true
+//                            restoreState = true
                         }
                     },
                     navToColorScreen = {
 
                         navController.navigate(Screen.Color.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+//                            popUpTo(navController.graph.findStartDestination().id) {
+//                                saveState = true
+//                            }
+//                            launchSingleTop = true
+//                            restoreState = true
                         }
+                    },
+                    signOut = {
+                        signOut(context,navController)
+                        // Clear data login dari OAuth dan lakukan sign out
+//                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                            .requestEmail()
+//                            .build()
+//                        val googleSignInClient = GoogleSignIn.getClient(context, gso)
+//                        googleSignInClient.signOut().addOnCompleteListener {
+//                            googleSignInClient.revokeAccess().addOnCompleteListener {
+//                                navController.navigate(Screen.Login.route) {
+//                                    popUpTo(Screen.Login.route) {
+//                                        saveState = false
+//                                    }
+//                                    launchSingleTop = true
+//                                }
+//                            }
+//                        }
                     }
+
                 )
             }
             composable(Screen.Detection.route) {
-                ImagePicker()
+                ImagePicker(navController = navController)
             }
             composable(Screen.Upload.route){
-                UploadScreen()
+                UploadScreen(navController = navController)
             }
             composable(Screen.Color.route){
-                ColorScreen()
+                ColorScreen(navController = navController)
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()
@@ -118,7 +157,7 @@ fun AksaIntarApp(
             composable(Screen.Login.route){
                 LoginScreen(
                     onSignIn = {},
-                    navigateToHomeScreen = { // <-- fungsi navigateToHomeScreen yang diteruskan ke LoginScreen
+                    navigateToHomeScreen = { email -> // <-- fungsi navigateToHomeScreen yang diteruskan ke LoginScreen
                         navController.navigate(Screen.Home.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -131,6 +170,25 @@ fun AksaIntarApp(
                 )
             }
 
+        }
+    }
+}
+
+fun signOut(context: Context, navController: NavHostController) {
+    // Clear data login dari OAuth dan lakukan sign out
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestEmail()
+        .build()
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
+    googleSignInClient.signOut().addOnCompleteListener {
+        googleSignInClient.revokeAccess().addOnCompleteListener {
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.Login.route) {
+                    saveState = false
+                }
+
+                launchSingleTop = true
+            }
         }
     }
 }
@@ -187,8 +245,8 @@ private fun BottomBar(
     }
 }
 
-@Composable
-@Preview
-private fun BottomBarPreview() {
-    BottomBar(navController = rememberNavController())
-}
+//@Composable
+//@Preview
+//private fun BottomBarPreview() {
+//    BottomBar(navController = rememberNavController())
+//}

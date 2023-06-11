@@ -1,6 +1,7 @@
 package com.capstone.aksaintar.ui.views.contributor
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -14,22 +15,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.capstone.aksaintar.R
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -40,12 +39,15 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
+
 private const val CAMERA_PERMISSION_CODE = 123
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun UploadScreen(
 
-    viewModel: UploadViewModel = viewModel(),
+    viewModel: UploadViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
+    navController: NavController
 
     ) {
 
@@ -78,74 +80,112 @@ fun UploadScreen(
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
     // Display image if there is one
-    bitmap?.let {
-        Image(
-            bitmap = it.asImageBitmap(),
-            contentDescription = "Image from the gallery or camera",
-            Modifier.size(400.dp)
-        )
-
-        Spacer(modifier = Modifier.padding(20.dp))
-
-    }
-
-    Spacer(modifier = Modifier.padding(20.dp))
-
-    TextField(
-        value = category,
-        onValueChange = { category = it },
-        label = { Text("Category") }
-    )
-
-    Row {
-        Button(onClick = { launcherGallery.launch("image/*") }) {
-            Text("Pick from gallery")
-        }
-        Button(onClick = {
-            if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
-                val values = ContentValues()
-                val resolver = context.contentResolver
-                val uri =
-                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                uri?.let {
-                    photoUri = it
-                    launcherCamera.launch(it)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Upload Screen") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back"
+                        )
+                    }
                 }
-            } else {
-                val rationale = "Camera permission is required to take pictures"
-                EasyPermissions.requestPermissions(
-                    PermissionRequest.Builder(
-                        context as ComponentActivity,
-                        CAMERA_PERMISSION_CODE,
-                        *cameraPermission
+            )
+        },content = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                bitmap?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = "Image from the gallery or camera",
+                        Modifier.size(400.dp)
                     )
-                        .setRationale(rationale)
-                        .build()
+
+
+
+                }
+
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    value = category,
+                    onValueChange = { category = it },
+                    label = { Text("Category") }
                 )
-            }
-        }) {
-            Text(text = "Take a picture")
-        }
-        Button(onClick = {
-            val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
-            val imageBody = photoUri?.let { uri ->
-                val inputStream = context.contentResolver.openInputStream(uri)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                val adjustedBitmap = adjustImageOrientation(context, uri)
-                val file = createTempFileWithBitmap(adjustedBitmap, "upload", ".jpeg", context.cacheDir)
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file", file.name, requestFile)
-            }
+                Spacer(modifier = Modifier.padding(10.dp))
 
-            if (imageBody != null) {
-                viewModel.uploadImage(categoryBody, imageBody)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = { launcherGallery.launch("image/*") }) {
+                        Text("Pick from gallery")
+                    }
+                    Button(onClick = {
+                        if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
+                            val values = ContentValues()
+                            val resolver = context.contentResolver
+                            val uri =
+                                resolver.insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    values
+                                )
+                            uri?.let {
+                                photoUri = it
+                                launcherCamera.launch(it)
+                            }
+                        } else {
+                            val rationale = "Camera permission is required to take pictures"
+                            EasyPermissions.requestPermissions(
+                                PermissionRequest.Builder(
+                                    context as ComponentActivity,
+                                    CAMERA_PERMISSION_CODE,
+                                    *cameraPermission
+                                )
+                                    .setRationale(rationale)
+                                    .build()
+                            )
+                        }
+                    }) {
+                        Text(text = "Take a picture")
+                    }
+
+
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+                Button(onClick = {
+                    val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val imageBody = photoUri?.let { uri ->
+                        val inputStream = context.contentResolver.openInputStream(uri)
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        val adjustedBitmap = adjustImageOrientation(context, uri)
+                        val file = createTempFileWithBitmap(
+                            adjustedBitmap,
+                            "upload",
+                            ".jpeg",
+                            context.cacheDir
+                        )
+                        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                        MultipartBody.Part.createFormData("file", file.name, requestFile)
+                    }
+
+                    if (imageBody != null) {
+                        viewModel.uploadImage(categoryBody, imageBody)
+                    }
+                }) {
+                    Text("Upload")
+                }
+
+
             }
-        }) {
-            Text("Upload")
-        }
-    }
-
-
+        })
 }
 
 private fun loadBitmapFromUri(context: Context, uri: Uri): Bitmap? {
@@ -192,14 +232,14 @@ private fun createTempFileWithBitmap(bitmap: Bitmap, name: String, extension: St
 
 
 
-@Composable
-@Preview
-fun UploadScreenPreview() {
-    MaterialTheme {
-        UploadScreen(
-            viewModel = UploadViewModel(
-
-            )
-        )
-    }
-}
+//@Composable
+//@Preview
+//fun UploadScreenPreview() {
+//    MaterialTheme {
+//        UploadScreen(
+//            viewModel = UploadViewModel(
+//
+//            )
+//        )
+//    }
+//}

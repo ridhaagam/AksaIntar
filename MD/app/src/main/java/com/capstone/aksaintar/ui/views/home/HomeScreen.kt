@@ -8,6 +8,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -23,12 +25,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 @Composable
 fun HomeScreen(
-    email: String?,
+    email: MutableState<String?>,
     navToCameraScreen: () -> Unit,
     navToUploadScreen: () -> Unit,
-    navToColorScreen: () -> Unit
+    navToColorScreen: () -> Unit,
+    signOut: () -> Unit
 ) {
-
+    val isGuest = rememberSaveable { mutableStateOf(email.value == "Guest") }
     Column(
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -43,7 +46,7 @@ fun HomeScreen(
                 .align(Alignment.Start)
                 .padding(start = 25.dp),
 
-            text = "Hi, $email" +
+            text = "Hi, ${email.value ?: ""}" +
                     "\nWelcome to Aksa Intar!",
 
             style = MaterialTheme.typography.h6.copy(
@@ -65,15 +68,25 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(20.dp))
         ButtonOutlined(text = "Color Detection", onClick = navToColorScreen)
         Spacer(modifier = Modifier.height(20.dp))
-        ButtonOutlined(text = "Contribution", onClick = navToUploadScreen)
-
+        ButtonOutlined(text = "Contribution", onClick = navToUploadScreen, enabled = !isGuest.value)
+        Spacer(modifier = Modifier.height(30.dp))
+        ButtonOutlined(
+            text = "Sign Out",
+            onClick = {
+                signOut()
+                      },
+            enabled = !isGuest.value
+        )
     }
 
 }
 
 
+
+
+
 @Composable
-fun ButtonOutlined(text: String, onClick: () -> Unit) {
+fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
     OutlinedButton(
         border = BorderStroke(2.dp, MaterialTheme.colors.primary),
         shape = RoundedCornerShape(20),
@@ -84,7 +97,8 @@ fun ButtonOutlined(text: String, onClick: () -> Unit) {
         modifier = Modifier
             .width(338.dp)
             .height(56.dp)
-            .semantics { testTag = "outlinedButton-$text" }
+            .semantics { testTag = "outlinedButton-$text" },
+        enabled = enabled
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -96,13 +110,14 @@ fun ButtonOutlined(text: String, onClick: () -> Unit) {
     }
 }
 
-@Composable
-@Preview
-fun HomeScreenPreview() {
-    HomeScreen(
-        email = "",
-        navToCameraScreen = {},
-        navToUploadScreen = {},
-        navToColorScreen = {}
-    )
-}
+//@Composable
+//@Preview
+//fun HomeScreenPreview() {
+//    HomeScreen(
+//        email = {},
+//        navToCameraScreen = {},
+//        navToUploadScreen = {},
+//        navToColorScreen = {},
+//        signOut = {}
+//    )
+//}

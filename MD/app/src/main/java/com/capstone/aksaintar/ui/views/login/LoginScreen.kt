@@ -34,26 +34,11 @@ private const val TAG = "LoginScreen"
 @Composable
 fun LoginScreen(
     onSignIn: (GoogleSignInAccount?) -> Unit,
-    navigateToHomeScreen: () -> Unit,
+    navigateToHomeScreen: (String) -> Unit,
     startGoogleSignIn: () -> Unit
 ) {
 
-//    val context = LocalContext.current
-//    val activity = LocalContext.current as ComponentActivity
-//    val resultLauncher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-//            try {
-//                val account = task.getResult(ApiException::class.java)
-//                onSignIn(account)
-//                navigateToHomeScreen()
-//            } catch (e: ApiException) {
-//                // Google Sign In failed, update UI appropriately
-//                Log.w(TAG, "Google sign in failed", e)
-//                // ...
-//            }
-//        }
-//    }
+
 
     Column(
         modifier = Modifier,
@@ -67,7 +52,7 @@ fun LoginScreen(
                 .height(416.dp)
                 .width(416.dp)
         )
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(100.dp))
         OutlinedButton(
             border = BorderStroke(2.dp, colors.primary),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
@@ -76,13 +61,7 @@ fun LoginScreen(
             ),
             onClick = {
                       startGoogleSignIn()
-//                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                    .requestEmail()
-//                    .build()
-//
-//                val googleSignInClient = GoogleSignIn.getClient(context, gso)
-//                val signInIntent = googleSignInClient.signInIntent
-//                resultLauncher.launch(signInIntent)
+
             },
             modifier = Modifier
                 .width(338.dp)
@@ -108,7 +87,7 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.height(10.dp))
         TextButton(
-            onClick = { /*TODO*/ }
+            onClick = {  navigateToHomeScreen("Guest") }
         ) {
             Text(text = "Continue as Guest", fontWeight = FontWeight.Bold, color = Color.Black)
             

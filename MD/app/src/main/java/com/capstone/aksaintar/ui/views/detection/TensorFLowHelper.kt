@@ -11,8 +11,9 @@ import java.nio.ByteOrder
 
 object TensorFLowHelper {
 
-     val imageSize = 224
-        val numChannels = 3
+    val imageSize = 224
+    val numChannels = 3
+    val confidenceThreshold = 0.9f // set your threshold here
 
     @Composable
     fun classifyImage(image: Bitmap, callback: (@Composable (fruit: String) -> Unit)) {
@@ -63,7 +64,8 @@ object TensorFLowHelper {
             "teddy bear", "toilet", "traffic light", "train", "truck", "umbrella", "vase", "zebra"
         )
 
-        callback.invoke(classes[maxPos])
+        val maxConfidenceClass = if (maxConfidence > confidenceThreshold) classes[maxPos] else "Not Detected"
+        callback.invoke(maxConfidenceClass)
 
         // Releases model resources if no longer used.
         model.close()

@@ -2,6 +2,7 @@ package com.capstone.aksaintar.ui.views.color
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -14,17 +15,19 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
+import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.capstone.aksaintar.R
 import com.capstone.aksaintar.ui.theme.AksaIntarTheme
 import com.capstone.aksaintar.ui.views.detection.TensorFLowHelper.imageSize
 import pub.devrel.easypermissions.EasyPermissions
@@ -32,8 +35,9 @@ import pub.devrel.easypermissions.PermissionRequest
 
 private const val CAMERA_PERMISSION_CODE = 123
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ColorScreen() {
+fun ColorScreen(navController: NavController) {
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
@@ -59,7 +63,20 @@ fun ColorScreen() {
 
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Color Detection Screen") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }, content = {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -123,7 +140,7 @@ fun ColorScreen() {
                 Text(text = "Take a picture")
             }
         }
-    }
+    }})
 }
 
 
@@ -139,10 +156,10 @@ private fun loadBitmapFromUri(context: Context, uri: Uri): Bitmap? {
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun DefaultPreview() {
-    AksaIntarTheme {
-        ColorScreen()
-    }
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun DefaultPreview() {
+//    AksaIntarTheme {
+//        ColorScreen()
+//    }
+//}
