@@ -72,4 +72,13 @@ As the Mobile Development team, we use native Kotlin and Android Studio to creat
 ## CLOUD COMPUTING
 ### Overview
 For the cloud computing path, we create an API for authentication and authorization of the apps. Then, to make it easier for users to login, we want to add Google Authentication. We use the Google Cloud Platform ( Compute Engine or cloud run  and Cloud Storage ) as the medium to deploy the project, and we may also use other third-party APIs as needed during development.
+ 
+ ### Google Cloud Platform
+<details>
+<summary>Service #1 </summary>
+
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/0a2c6f16-ee94-4143-94c5-7bd6825d12dd)
+
+</details>
+
 
