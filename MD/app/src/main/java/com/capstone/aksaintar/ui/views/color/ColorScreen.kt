@@ -10,6 +10,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,12 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.capstone.aksaintar.R
-import com.capstone.aksaintar.ui.theme.AksaIntarTheme
 import com.capstone.aksaintar.ui.views.detection.TensorFLowHelper.imageSize
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
@@ -43,104 +43,109 @@ fun ColorScreen(navController: NavController) {
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     // rememberLauncherForActivityResult menyimpan status komposisi saat terjadi perubahan konfigurasi
-    val launcherGallery = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = {
-            photoUri = it
-            bitmap = it?.let { it1 -> loadBitmapFromUri(context, it1) }
-        }
-    )
-    val launcherCamera = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { isTaken ->
-            if (isTaken) {
-                photoUri?.let {
-                    bitmap = loadBitmapFromUri(context, it)
+    val launcherGallery =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent(),
+            onResult = {
+                photoUri = it
+                bitmap = it?.let { it1 -> loadBitmapFromUri(context, it1) }
+            })
+    val launcherCamera =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture(),
+            onResult = { isTaken ->
+                if (isTaken) {
+                    photoUri?.let {
+                        bitmap = loadBitmapFromUri(context, it)
+                    }
                 }
-            }
-        }
-    )
+            })
 
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Color Detection Screen") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
-                        )
+    Scaffold(topBar = {
+        TopAppBar(title = { Text("Halaman Deteksi Warna") }, navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_back),
+                    contentDescription = "Kembali ke halaman utama"
+                )
+            }
+        })
+    }, content = {
+        Column(
+            Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            bitmap?.let {
+                Image(
+                    bitmap = it.asImageBitmap(),
+                    contentDescription = "Gambar Pratinjau",
+                    Modifier.size(400.dp)
+                )
+
+                Spacer(modifier = Modifier.padding(20.dp))
+
+                val scaledBitmap = Bitmap.createScaledBitmap(it, imageSize, imageSize, false)
+                TFHelper.classifyColor(scaledBitmap) { classification ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .semantics(mergeDescendants = true) {},
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Warna yang terdeteksi adalah :  ")
+                        Text(text = classification, color = colors.primary, fontSize = 24.sp)
+                        Toast.makeText(
+                            context,
+                            "Warna yang terdeteksi adalah $classification",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-            )
-        }, content = {
-    Column(
-        Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        bitmap?.let {
-            Image(
-                bitmap = it.asImageBitmap(),
-                contentDescription = "Image from the gallery or camera",
-                Modifier.size(400.dp)
-            )
+            }
 
             Spacer(modifier = Modifier.padding(20.dp))
 
-            val scaledBitmap = Bitmap.createScaledBitmap(it, imageSize, imageSize, false)
-            TFHelper.classifyColor(scaledBitmap) { classification ->
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "Warna Dari gambar adalah : ")
-                    Text(text = classification, color = colors.primary, fontSize = 24.sp)
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(onClick = {
+                    launcherGallery.launch("image/*")
+                }) {
+                    Text(text = "Ambil gambar dari galeri")
                 }
-            }
-        }
 
-        Spacer(modifier = Modifier.padding(20.dp))
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Button(onClick = {
-                launcherGallery.launch("image/*")
-            }) {
-                Text(text = "Pick from Gallery")
-            }
-
-            Button(onClick = {
-                if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
-                    val values = ContentValues()
-                    val resolver = context.contentResolver
-                    val uri =
-                        resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                    uri?.let {
-                        photoUri = it
-                        launcherCamera.launch(it)
-                    }
-                } else {
-                    val rationale = "Camera permission is required to take pictures"
-                    EasyPermissions.requestPermissions(
-                        PermissionRequest.Builder(
-                            context as ComponentActivity,
-                            CAMERA_PERMISSION_CODE,
-                            *cameraPermission
+                Button(onClick = {
+                    if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
+                        val values = ContentValues()
+                        val resolver = context.contentResolver
+                        val uri = resolver.insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
                         )
-                            .setRationale(rationale)
-                            .build()
-                    )
+                        uri?.let {
+                            photoUri = it
+                            launcherCamera.launch(it)
+                        }
+                    } else {
+                        val rationale = "Izin Kamera dibutuhkan untuk mengambil gambar"
+                        EasyPermissions.requestPermissions(
+                            PermissionRequest.Builder(
+                                context as ComponentActivity,
+                                CAMERA_PERMISSION_CODE,
+                                *cameraPermission
+                            ).setRationale(rationale).build()
+                        )
+                    }
+                }) {
+                    Text(text = "Ambil gambar dengan kamera")
                 }
-            }) {
-                Text(text = "Take a picture")
             }
         }
-    }})
+    })
 }
 
 

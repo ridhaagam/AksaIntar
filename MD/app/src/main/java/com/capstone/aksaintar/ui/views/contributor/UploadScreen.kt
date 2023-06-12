@@ -23,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,7 +50,7 @@ fun UploadScreen(
     viewModel: UploadViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
     navController: NavController
 
-    ) {
+) {
 
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
@@ -83,17 +84,17 @@ fun UploadScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Upload Screen") },
+                title = { Text("Halaman Kontribusi") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
+                            contentDescription = "Kembali ke halaman utama"
                         )
                     }
                 }
             )
-        },content = {
+        }, content = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -101,10 +102,9 @@ fun UploadScreen(
                 bitmap?.let {
                     Image(
                         bitmap = it.asImageBitmap(),
-                        contentDescription = "Image from the gallery or camera",
+                        contentDescription = "Gambar Pratinjau",
                         Modifier.size(400.dp)
                     )
-
 
 
                 }
@@ -114,19 +114,25 @@ fun UploadScreen(
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 16.dp)
+                        .semantics {
+                            contentDescription = "Kolom Kategori"
+                        },
                     value = category,
                     onValueChange = { category = it },
-                    label = { Text("Category") }
+                    label = { Text("Kategori") }
+
+
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
 
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalAlignment = Alignment.CenterHorizontally
+
                 ) {
                     Button(onClick = { launcherGallery.launch("image/*") }) {
-                        Text("Pick from gallery")
+                        Text("Ambil gambar dari Galeri")
                     }
                     Button(onClick = {
                         if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
@@ -142,7 +148,7 @@ fun UploadScreen(
                                 launcherCamera.launch(it)
                             }
                         } else {
-                            val rationale = "Camera permission is required to take pictures"
+                            val rationale = "Ijin kamera diperlukan untuk mengambil gambar"
                             EasyPermissions.requestPermissions(
                                 PermissionRequest.Builder(
                                     context as ComponentActivity,
@@ -154,7 +160,7 @@ fun UploadScreen(
                             )
                         }
                     }) {
-                        Text(text = "Take a picture")
+                        Text(text = "Ambil gambar dengan Kamera")
                     }
 
 
@@ -180,7 +186,7 @@ fun UploadScreen(
                         viewModel.uploadImage(categoryBody, imageBody)
                     }
                 }) {
-                    Text("Upload")
+                    Text("Unggah")
                 }
 
 
@@ -216,7 +222,13 @@ private fun adjustImageOrientation(context: Context, imageUri: Uri): Bitmap {
         bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true
     )
 }
-private fun createTempFileWithBitmap(bitmap: Bitmap, name: String, extension: String, directory: File): File {
+
+private fun createTempFileWithBitmap(
+    bitmap: Bitmap,
+    name: String,
+    extension: String,
+    directory: File
+): File {
     val file = File.createTempFile(name, extension, directory)
     val bos = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos)
@@ -229,7 +241,6 @@ private fun createTempFileWithBitmap(bitmap: Bitmap, name: String, extension: St
     }
     return file
 }
-
 
 
 //@Composable

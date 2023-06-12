@@ -46,7 +46,7 @@ object TFHelper {
 
         // Runs model inference and gets result.
         val outputs: Colormodel.Outputs = model.process(inputFeature0)
-        val outputFeature0: TensorBuffer = outputs.getOutputFeature0AsTensorBuffer()
+        val outputFeature0: TensorBuffer = outputs.outputFeature0AsTensorBuffer
         val confidences = outputFeature0.floatArray
         // Find the index of the class with the highest confidence.
         var maxPos = 0
@@ -58,15 +58,15 @@ object TFHelper {
             }
         }
         val classes = arrayOf(
-            "black",
-            "blue",
-            "brown",
-            "green",
-            "pink",
-            "red",
-            "silver",
-            "white",
-            "yellow"
+            "hitam",
+            "biru",
+            "cokelat",
+            "hijau",
+            "merah muda",
+            "merah",
+            "perak",
+            "putih",
+            "kuning"
         )
 
         callback.invoke(classes[maxPos])

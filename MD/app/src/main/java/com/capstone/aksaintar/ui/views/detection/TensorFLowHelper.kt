@@ -24,11 +24,23 @@ object TensorFLowHelper {
 
         // Creates inputs for reference.
         val inputFeature0 =
-            TensorBuffer.createFixedSize(intArrayOf(1, imageSize, imageSize, numChannels), DataType.FLOAT32)
-        val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * numChannels)
+            TensorBuffer.createFixedSize(
+                intArrayOf(1, imageSize, imageSize, numChannels),
+                DataType.FLOAT32
+            )
+        val byteBuffer: ByteBuffer =
+            ByteBuffer.allocateDirect(4 * imageSize * imageSize * numChannels)
         byteBuffer.order(ByteOrder.nativeOrder())
         val intValues = IntArray(imageSize * imageSize)
-        resizedImage.getPixels(intValues, 0, resizedImage.width, 0, 0, resizedImage.width, resizedImage.height)
+        resizedImage.getPixels(
+            intValues,
+            0,
+            resizedImage.width,
+            0,
+            0,
+            resizedImage.width,
+            resizedImage.height
+        )
         var pixel = 0
         // Iterate over each pixel and extract R, G, and B values. Add those values individually to the byte buffer.
         for (i in 0 until imageSize) {
@@ -45,7 +57,7 @@ object TensorFLowHelper {
 
         // Runs model inference and gets result.
         val outputs: Model.Outputs = model.process(inputFeature0)
-        val outputFeature0: TensorBuffer = outputs.getOutputFeature0AsTensorBuffer()
+        val outputFeature0: TensorBuffer = outputs.outputFeature0AsTensorBuffer
         val confidences = outputFeature0.floatArray
         // Find the index of the class with the highest confidence.
         var maxPos = 0
@@ -57,14 +69,53 @@ object TensorFLowHelper {
             }
         }
         val classes = arrayOf(
-            "airplane", "banana", "bear", "bed", "bench", "bird", "boat", "broccoli", "bus", "cake",
-            "car", "cat", "cell phone", "clock", "cow", "dog", "donut", "elephant", "fire hydrant",
-            "giraffe", "horse", "hot dog", "kite", "motorcycle", "orange", "oven", "person", "pizza",
-            "refrigerator", "sandwich", "scissors", "sheep", "sink", "stop sign", "suitcase",
-            "teddy bear", "toilet", "traffic light", "train", "truck", "umbrella", "vase", "zebra"
+            "pesawat",
+            "pisang",
+            "beruang",
+            "tempat tidur",
+            "bangku",
+            "burung",
+            "perahu",
+            "brokoli",
+            "bus",
+            "kue",
+            "mobil",
+            "kucing",
+            "telepon selular",
+            "jam",
+            "sapi",
+            "anjing",
+            "donat",
+            "gajah",
+            "hydrant pemadam kebakaran",
+            "jerapah",
+            "kuda",
+            "hot dog",
+            "layang-layang",
+            "sepeda motor",
+            "jeruk",
+            "oven",
+            "orang",
+            "pizza",
+            "kulkas",
+            "sandwich",
+            "gunting",
+            "domba",
+            "wastafel",
+            "tanda berhenti",
+            "koper",
+            "boneka beruang",
+            "toilet",
+            "lampu lalu lintas",
+            "kereta",
+            "truk",
+            "payung",
+            "vas bunga",
+            "zebra"
         )
 
-        val maxConfidenceClass = if (maxConfidence > confidenceThreshold) classes[maxPos] else "Not Detected"
+        val maxConfidenceClass =
+            if (maxConfidence > confidenceThreshold) classes[maxPos] else "Tidak Diketahui"
         callback.invoke(maxConfidenceClass)
 
         // Releases model resources if no longer used.

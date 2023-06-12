@@ -9,6 +9,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,13 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.capstone.aksaintar.R
-import com.capstone.aksaintar.ui.theme.AksaIntarTheme
 import com.capstone.aksaintar.ui.views.detection.TensorFLowHelper.imageSize
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
@@ -66,81 +65,103 @@ fun ImagePicker(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Object Detection Screen") },
+                title = { Text("Halaman Deteksi Objek") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
+                            contentDescription = "Kembali ke halaman utama"
                         )
                     }
                 }
             )
         }, content = {
-    Column(
-        Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .semantics {
+//                        contentDescription = "Halaman Deteksi Objek"
+                    },
 
-        bitmap?.let {
-            Image(
-                bitmap = it.asImageBitmap(),
-                contentDescription = "Image from the gallery or camera",
-                Modifier.size(400.dp)
-            )
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
 
-            Spacer(modifier = Modifier.padding(20.dp))
-
-            val scaledBitmap = Bitmap.createScaledBitmap(it, imageSize, imageSize, false)
-            TensorFLowHelper.classifyImage(scaledBitmap) { classification ->
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "Image is classified as:")
-                    Text(text = classification, color = colors.primary, fontSize = 24.sp)
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.padding(20.dp))
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Button(onClick = {
-                launcherGallery.launch("image/*")
-            }) {
-                Text(text = "Pick from Gallery")
-            }
-
-            Button(onClick = {
-                if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
-                    val values = ContentValues()
-                    val resolver = context.contentResolver
-                    val uri =
-                        resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                    uri?.let {
-                        photoUri = it
-                        launcherCamera.launch(it)
-                    }
-                } else {
-                    val rationale = "Camera permission is required to take pictures"
-                    EasyPermissions.requestPermissions(
-                        PermissionRequest.Builder(
-                            context as ComponentActivity,
-                            CAMERA_PERMISSION_CODE,
-                            *cameraPermission
-                        )
-                            .setRationale(rationale)
-                            .build()
+                bitmap?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = "Gambar Pratinjau ",
+                        Modifier.size(400.dp)
                     )
+
+                    Spacer(modifier = Modifier.padding(20.dp))
+
+                    val scaledBitmap = Bitmap.createScaledBitmap(it, imageSize, imageSize, false)
+                    TensorFLowHelper.classifyImage(scaledBitmap) { classification ->
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(text = "Gambar yang terdeteksi adalah:")
+                            Text(text = classification, color = colors.primary, fontSize = 24.sp)
+//                            Toast.makeText(context, "Gambar yang terdeteksi  $classification", Toast.LENGTH_SHORT).show()
+                            if (classification == "Tidak Diketahui") {
+                                Toast.makeText(context, "Gambar yang terdeteksi $classification, coba lagi", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Gambar yang terdeteksi adalah $classification", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 }
-            }) {
-                Text(text = "Take a picture")
+
+                Spacer(modifier = Modifier.padding(20.dp))
+
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = {
+                        launcherGallery.launch("image/*")
+                    }) {
+                        Text(text = "Ambil Gambar dari Galeri")
+                    }
+
+                    Button(onClick = {
+                        if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
+                            val values = ContentValues()
+                            val resolver = context.contentResolver
+                            val uri =
+                                resolver.insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    values
+                                )
+                            uri?.let {
+                                photoUri = it
+                                launcherCamera.launch(it)
+                            }
+                        } else {
+                            val rationale = "Izin kamera diperlukan untuk mengambil gambar"
+                            EasyPermissions.requestPermissions(
+                                PermissionRequest.Builder(
+                                    context as ComponentActivity,
+                                    CAMERA_PERMISSION_CODE,
+                                    *cameraPermission
+                                )
+                                    .setRationale(rationale)
+                                    .build()
+                            )
+                        }
+                    }) {
+                        Text(
+                            text = "Ambil Gambar dengan Kamera",
+                        )
+
+                    }
+                }
             }
-        }
-    }})
+        })
 }
 
 
@@ -156,10 +177,3 @@ private fun loadBitmapFromUri(context: Context, uri: Uri): Bitmap? {
     }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//fun DefaultPreview() {
-//    AksaIntarTheme {
-//        ImagePicker(navController = nav)
-//    }
-//}

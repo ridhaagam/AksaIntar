@@ -85,6 +85,7 @@ fun AksaIntarApp(
 
     Scaffold(
         modifier = modifier
+
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -124,9 +125,6 @@ fun AksaIntarApp(
             }
             composable(Screen.Color.route){
                 ColorScreen(navController = navController)
-            }
-            composable(Screen.Profile.route) {
-                ProfileScreen()
             }
             composable(Screen.Login.route){
                 LoginScreen(

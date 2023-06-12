@@ -1,10 +1,8 @@
 package com.capstone.aksaintar.ui.views.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -17,13 +15,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 
 @Composable
@@ -34,58 +31,71 @@ fun HomeScreen(
     navToColorScreen: () -> Unit,
     signOut: () -> Unit
 ) {
+
     val isGuest = rememberSaveable { mutableStateOf(email.value == "Guest") }
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        horizontalAlignment = Alignment.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics {
+                contentDescription = "Halaman Utama"
+
+            }
+
     ) {
         Spacer(modifier = Modifier.height(106.dp))
         Text(
             modifier = Modifier.padding(start = 25.dp),
-            text = "Hi, ${email.value ?: ""}\nWelcome to Aksa Intar!",
+            text = "Hai, ${email.value ?: ""}\nSelamat Datang di Aksaintar",
             style = MaterialTheme.typography.h6.copy(
                 fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Start
             )
         )
         Text(
-            text = "Choose feature on the button below to start",
+            text = "Silahkan pilih fitur yang ingin digunakan",
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(top = 10.dp, start = 25.dp)
         )
         Spacer(modifier = Modifier.height(150.dp))
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+        LazyColumn(
             modifier = Modifier.padding(horizontal = 25.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
+
+            ) {
             item {
                 ButtonOutlined(
-                    text = "Object Detection",
+                    text = "Deteksi Objek",
                     onClick = navToCameraScreen
                 )
             }
 
             item {
                 ButtonOutlined(
-                    text = "Color Detection",
+                    text = "Deteksi Warna",
                     onClick = navToColorScreen
                 )
+
             }
-            item {
-                ButtonOutlined(
-                    text = "Contribution",
-                    onClick = navToUploadScreen,
-                    enabled = !isGuest.value
-                )
-            }
-            item {
-                ButtonOutlined(
-                    text = "Sign Out",
-                    onClick = signOut,
-                    enabled = !isGuest.value
-                )
+
+
+            if (email.value != "Tamu") {
+                item {
+                    ButtonOutlined(
+                        text = "Kontribusi",
+                        onClick = navToUploadScreen,
+                        enabled = !isGuest.value
+                    )
+                    Spacer(modifier = Modifier.height(150.dp))
+                }
+
+                item {
+                    ButtonOutlined(
+                        text = "Keluar",
+                        onClick = signOut,
+                        enabled = !isGuest.value
+                    )
+                }
             }
         }
     }
@@ -114,5 +124,3 @@ fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
         )
     }
 }
-
-
