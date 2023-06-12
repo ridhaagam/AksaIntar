@@ -2,6 +2,7 @@ package com.capstone.aksaintar
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -71,15 +73,17 @@ fun AksaIntarApp(
             }
         } else {
             email.value = "Guest" // Set nilai email sebagai "Guest" saat pengguna sign out
+            navController.navigate(Screen.Login.route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = false
+                }
+                restoreState = false
+                launchSingleTop = true
+            }
         }
     }
 
     Scaffold(
-//        bottomBar = {
-//            if (currentRoute != Screen.Detection.route) {
-//                BottomBar(navController)
-//            }
-//        },
         modifier = modifier
     ) { innerPadding ->
         NavHost(
@@ -94,50 +98,20 @@ fun AksaIntarApp(
                     navToCameraScreen = {
                         println(account?.displayName)
                         navController.navigate(Screen.Detection.route) {
-//                            popUpTo(navController.graph.findStartDestination().id) {
-//                                saveState = true
-//                            }
-//                            launchSingleTop = true
-//                            restoreState = true
                         }
                     },
                     navToUploadScreen = {
 
                         navController.navigate(Screen.Upload.route) {
-//                            popUpTo(navController.graph.findStartDestination().id) {
-//                                saveState = true
-//                            }
-//                            launchSingleTop = true
-//                            restoreState = true
                         }
                     },
                     navToColorScreen = {
 
                         navController.navigate(Screen.Color.route) {
-//                            popUpTo(navController.graph.findStartDestination().id) {
-//                                saveState = true
-//                            }
-//                            launchSingleTop = true
-//                            restoreState = true
                         }
                     },
                     signOut = {
                         signOut(context,navController)
-                        // Clear data login dari OAuth dan lakukan sign out
-//                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                            .requestEmail()
-//                            .build()
-//                        val googleSignInClient = GoogleSignIn.getClient(context, gso)
-//                        googleSignInClient.signOut().addOnCompleteListener {
-//                            googleSignInClient.revokeAccess().addOnCompleteListener {
-//                                navController.navigate(Screen.Login.route) {
-//                                    popUpTo(Screen.Login.route) {
-//                                        saveState = false
-//                                    }
-//                                    launchSingleTop = true
-//                                }
-//                            }
-//                        }
                     }
 
                 )
@@ -175,6 +149,8 @@ fun AksaIntarApp(
 }
 
 fun signOut(context: Context, navController: NavHostController) {
+    val activity = context as Activity
+
     // Clear data login dari OAuth dan lakukan sign out
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
@@ -182,71 +158,12 @@ fun signOut(context: Context, navController: NavHostController) {
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
     googleSignInClient.signOut().addOnCompleteListener {
         googleSignInClient.revokeAccess().addOnCompleteListener {
-            navController.navigate(Screen.Login.route) {
-                popUpTo(Screen.Login.route) {
-                    saveState = false
-                }
-
-                launchSingleTop = true
-            }
+            val intent = Intent(activity, activity::class.java)
+            activity.finish()
+            activity.startActivity(intent)
         }
     }
 }
 
-@Composable
-private fun BottomBar(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
-) {
-    BottomNavigation(
-        modifier = modifier
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-        val navigationItems = listOf(
-            NavigationItem(
-                title = stringResource(R.string.menu_home),
-                icon = Icons.Default.Home,
-                screen = Screen.Home,
-                contentDescription = stringResource(R.string.menu_home)
-            ),
 
 
-            NavigationItem(
-                title = stringResource(R.string.menu_profile),
-                icon = Icons.Default.AccountCircle,
-                screen = Screen.Profile,
-                contentDescription = stringResource(R.string.menu_profile)
-            ),
-        )
-        BottomNavigation {
-            navigationItems.map { item ->
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.contentDescription
-                        )
-                    },
-                    label = { Text(item.title) },
-                    selected = currentRoute == item.screen.route,
-                    onClick = {
-                        navController.navigate(item.screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            restoreState = true
-                            launchSingleTop = true
-                        }
-                    }
-                )
-            }
-        }
-    }
-}
-
-//@Composable
-//@Preview
-//private fun BottomBarPreview() {
-//    BottomBar(navController = rememberNavController())
-//}
