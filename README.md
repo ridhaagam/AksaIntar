@@ -75,9 +75,16 @@ For the cloud computing path, we create an API for authentication and authorizat
  
  ### Google Cloud Platform
 <details>
-<summary>Service #1 </summary>
+<summary>Dashboard GCP </summary>
 
 ![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/0a2c6f16-ee94-4143-94c5-7bd6825d12dd)
+
+</details>
+ 
+ <details>
+<summary>API & Services </summary>
+
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/215b7145-c027-495d-9020-b1e5abceb6ae)
 
 </details>
 
