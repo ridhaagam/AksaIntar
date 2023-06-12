@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
@@ -53,7 +54,11 @@ fun LoginScreen(
             onSignIn(null)
         }
     }
-
+    val logoResId = if (isSystemInDarkTheme()) {
+        R.drawable.logodm
+    } else {
+        R.drawable.logonb
+    }
     Column(
         modifier = Modifier
             .semantics { contentDescription = "Login Screen" },
@@ -61,7 +66,7 @@ fun LoginScreen(
 
         ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = logoResId),
             contentDescription = "Logo Aksa Intar",
             modifier = Modifier
                 .height(416.dp)

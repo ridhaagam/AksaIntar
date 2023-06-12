@@ -61,6 +61,7 @@ fun AksaIntarApp(
     BackHandler(enabled = currentRoute != Screen.Login.route) {
         navController.popBackStack()
     }
+
     LaunchedEffect(account) {
         if (account != null) {
             email.value = account?.displayName ?: "Guest" // Update nilai email saat pengguna sign in dengan akun Google
