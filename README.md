@@ -81,11 +81,23 @@ For the cloud computing path, we create an API for authentication and authorizat
 
 </details>
  
- <details>
+<details>
 <summary>API & Services </summary>
 
 ![Untitled1](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/d23390e6-747f-4ebd-b811-08add445c1c7)
 
 </details>
 
+<details>
+<summary>Cloud Storage [Bucket] </summary>
 
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/754e1a6d-a72e-4b15-8115-0406e9b7686d)
+
+</details>
+ 
+<details>
+<summary>SQL </summary>
+
+![Untitled2](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/b8e7b03a-67dd-40d7-9f92-c0e0f877bf53)
+
+</details>
