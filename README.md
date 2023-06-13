@@ -114,6 +114,6 @@ Then, to make it easier for users to login, we want to add Google Authentication
 <details>
 <summary>Architecture </summary>
 
-![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/00fc4461-df60-4763-ae9b-364f02967484)
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/3548b0ac-e139-485e-bc00-93794771a67a)
 
 </details>
