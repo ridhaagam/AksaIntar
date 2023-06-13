@@ -74,7 +74,7 @@ As the Mobile Development team, we use native Kotlin and Android Studio to creat
 For the cloud computing path, we create an API upload image for the apps. 
 Then, to make it easier for users to login, we want to add Google Authentication. We use the Google Cloud Platform ( Compute Engine or App Engine and Cloud Storage ) as the medium to deploy the project, and we may also use other third-party APIs as needed during development.
  
- ### Google Cloud Platform
+### Google Cloud Platform
 <details>
 <summary>Dashboard GCP </summary>
 
@@ -107,5 +107,12 @@ Then, to make it easier for users to login, we want to add Google Authentication
 <summary>App Engine </summary>
 
 ![Untitled3](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/a81df9b3-a38e-4a61-86d6-2509cc0a51c4)
+
+</details>
+
+ ### Cloud Architecture
+ <summary>Architecture </summary>
+
+https://www.figma.com/file/Sb5Hg2zPrXr55fPlBZ5Lwh/Untitled?type=whiteboard&node-id=0%3A1&t=yzP1nZ2wmR5l6t9y-1
 
 </details>
