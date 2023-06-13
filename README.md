@@ -112,7 +112,8 @@ Then, to make it easier for users to login, we want to add Google Authentication
 
 ### Cloud Architecture
 <details>
+<summary>Architecture </summary>
 
-![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/cdf84d90-ec5d-4633-ae08-0f26fea5870f)
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/00fc4461-df60-4763-ae9b-364f02967484)
 
 </details>
