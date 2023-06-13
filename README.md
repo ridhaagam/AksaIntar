@@ -119,10 +119,4 @@ Then, to make it easier for users to login, we want to add Google Authentication
 </details>
  
 ### API Documentation
-Check our API documentation from link below :
-<details>
-<summary>Postman </summary>
-
-https://documenter.getpostman.com/view/18310989/2s93sf1qdh
-
-</details>
+Check our API documentation [POSTMAN] from link below : [here](https://documenter.getpostman.com/view/18310989/2s93sf1qdh).
