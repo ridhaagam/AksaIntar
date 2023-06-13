@@ -32,15 +32,13 @@ fun HomeScreen(
     signOut: () -> Unit
 ) {
 
-    val isGuest = rememberSaveable { mutableStateOf(email.value == "Guest") }
-    Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .fillMaxWidth()
-            .semantics {
-                contentDescription = "Halaman Utama"
+    val isGuest = rememberSaveable { mutableStateOf(email.value == "Tamu") }
+    Column(horizontalAlignment = Alignment.Start, modifier = Modifier
+        .fillMaxWidth()
+        .semantics {
+            contentDescription = "Halaman Utama"
 
-            }
+        }
 
     ) {
         Spacer(modifier = Modifier.height(106.dp))
@@ -55,7 +53,7 @@ fun HomeScreen(
         Text(
             text = "Silahkan pilih fitur yang ingin digunakan",
             textAlign = TextAlign.Start,
-            modifier = Modifier.padding(top = 10.dp, start = 25.dp)
+            modifier = Modifier.padding(top = 10.dp, start = 25.dp),
         )
         Spacer(modifier = Modifier.height(150.dp))
         LazyColumn(
@@ -65,15 +63,13 @@ fun HomeScreen(
             ) {
             item {
                 ButtonOutlined(
-                    text = "Deteksi Objek",
-                    onClick = navToCameraScreen
+                    text = "Deteksi Objek", onClick = navToCameraScreen
                 )
             }
 
             item {
                 ButtonOutlined(
-                    text = "Deteksi Warna",
-                    onClick = navToColorScreen
+                    text = "Deteksi Warna", onClick = navToColorScreen
                 )
 
             }
@@ -82,18 +78,14 @@ fun HomeScreen(
             if (email.value != "Tamu") {
                 item {
                     ButtonOutlined(
-                        text = "Kontribusi",
-                        onClick = navToUploadScreen,
-                        enabled = !isGuest.value
+                        text = "Kontribusi", onClick = navToUploadScreen, enabled = !isGuest.value
                     )
-                    Spacer(modifier = Modifier.height(150.dp))
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
 
                 item {
                     ButtonOutlined(
-                        text = "Keluar",
-                        onClick = signOut,
-                        enabled = !isGuest.value
+                        text = "Keluar", onClick = signOut, enabled = !isGuest.value
                     )
                 }
             }
@@ -107,7 +99,7 @@ fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
         border = BorderStroke(2.dp, MaterialTheme.colors.primary),
         shape = RoundedCornerShape(20),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.White
+            backgroundColor = Color.Transparent
         ),
         onClick = onClick,
         modifier = Modifier
@@ -120,7 +112,7 @@ fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
             text = text,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center, // Teks di tengah tombol
-            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)
+            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
@@ -25,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
-private const val RC_SIGN_IN = 123
 private const val TAG = "LoginScreen"
 
 
@@ -35,6 +35,12 @@ fun LoginScreen(
     navigateToHomeScreen: (String) -> Unit,
     startGoogleSignIn: () -> Unit
 ) {
+
+    val warna = if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        Color.Black
+    }
     val context = LocalContext.current
     val googleSignInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -53,7 +59,11 @@ fun LoginScreen(
             onSignIn(null)
         }
     }
-
+    val logoResId = if (isSystemInDarkTheme()) {
+        R.drawable.logodm
+    } else {
+        R.drawable.logonb
+    }
     Column(
         modifier = Modifier
             .semantics { contentDescription = "Login Screen" },
@@ -61,7 +71,7 @@ fun LoginScreen(
 
         ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = logoResId),
             contentDescription = "Logo Aksa Intar",
             modifier = Modifier
                 .height(416.dp)
@@ -100,7 +110,7 @@ fun LoginScreen(
                     modifier = Modifier.size(26.dp)
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "Masuk dengan Google", fontWeight = FontWeight.Bold)
+                Text(text = "Masuk dengan Google", fontWeight = FontWeight.Bold, color = warna)
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -108,17 +118,10 @@ fun LoginScreen(
             onClick = { navigateToHomeScreen("Tamu") },
 
             ) {
-            Text(text = "Masuk sebagai tamu", fontWeight = FontWeight.Bold, color = Color.Black)
+
+            Text(text = "Masuk sebagai tamu", fontWeight = FontWeight.Bold, color = warna)
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LoginScreen(
-        onSignIn = {},
-        navigateToHomeScreen = {},
-        startGoogleSignIn = {}
-    )
-}
+

@@ -4,42 +4,29 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.capstone.aksaintar.ui.navigation.NavigationItem
 import com.capstone.aksaintar.ui.navigation.Screen
 import com.capstone.aksaintar.ui.views.color.ColorScreen
 import com.capstone.aksaintar.ui.views.contributor.UploadScreen
 import com.capstone.aksaintar.ui.views.detection.ImagePicker
 import com.capstone.aksaintar.ui.views.home.HomeScreen
 import com.capstone.aksaintar.ui.views.login.LoginScreen
-import com.capstone.aksaintar.ui.views.profile.ProfileScreen
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import kotlinx.coroutines.flow.StateFlow
-import androidx.activity.OnBackPressedDispatcherOwner
-import androidx.activity.compose.BackHandler
-import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -61,9 +48,11 @@ fun AksaIntarApp(
     BackHandler(enabled = currentRoute != Screen.Login.route) {
         navController.popBackStack()
     }
+
     LaunchedEffect(account) {
         if (account != null) {
-            email.value = account?.displayName ?: "Guest" // Update nilai email saat pengguna sign in dengan akun Google
+            email.value = account?.displayName
+                ?: "Tamu"
             navController.navigate(Screen.Home.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
@@ -72,7 +61,7 @@ fun AksaIntarApp(
                 launchSingleTop = true
             }
         } else {
-            email.value = "Guest" // Set nilai email sebagai "Guest" saat pengguna sign out
+            email.value = "Tamu"
             navController.navigate(Screen.Login.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = false
@@ -112,7 +101,7 @@ fun AksaIntarApp(
                         }
                     },
                     signOut = {
-                        signOut(context,navController)
+                        signOut(context)
                     }
 
                 )
@@ -120,16 +109,16 @@ fun AksaIntarApp(
             composable(Screen.Detection.route) {
                 ImagePicker(navController = navController)
             }
-            composable(Screen.Upload.route){
+            composable(Screen.Upload.route) {
                 UploadScreen(navController = navController)
             }
-            composable(Screen.Color.route){
+            composable(Screen.Color.route) {
                 ColorScreen(navController = navController)
             }
-            composable(Screen.Login.route){
+            composable(Screen.Login.route) {
                 LoginScreen(
                     onSignIn = {},
-                    navigateToHomeScreen = { email -> // <-- fungsi navigateToHomeScreen yang diteruskan ke LoginScreen
+                    navigateToHomeScreen = { email ->
                         navController.navigate(Screen.Home.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -146,10 +135,9 @@ fun AksaIntarApp(
     }
 }
 
-fun signOut(context: Context, navController: NavHostController) {
+fun signOut(context: Context) {
     val activity = context as Activity
 
-    // Clear data login dari OAuth dan lakukan sign out
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
         .build()

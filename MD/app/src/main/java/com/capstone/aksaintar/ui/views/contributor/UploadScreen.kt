@@ -20,6 +20,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -52,7 +53,6 @@ fun UploadScreen(
 
 ) {
 
-
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     var category by remember { mutableStateOf("") }
@@ -80,7 +80,6 @@ fun UploadScreen(
 
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
-    // Display image if there is one
     Scaffold(
         topBar = {
             TopAppBar(
@@ -109,11 +108,12 @@ fun UploadScreen(
 
                 }
 
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
+
                         .padding(horizontal = 16.dp)
                         .semantics {
                             contentDescription = "Kolom Kategori"
@@ -124,69 +124,89 @@ fun UploadScreen(
 
 
                 )
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    Button(onClick = { launcherGallery.launch("image/*") }) {
-                        Text("Ambil gambar dari Galeri")
+                    Button(
+                        onClick = { launcherGallery.launch("image/*") },
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                    ) {
+                        Text(
+                            text = "Ambil gambar dari Galeri",
+                            color = Color.White
+
+                        )
                     }
-                    Button(onClick = {
-                        if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
-                            val values = ContentValues()
-                            val resolver = context.contentResolver
-                            val uri =
-                                resolver.insert(
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                    values
+                    Button(
+                        onClick = {
+                            if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
+                                val values = ContentValues()
+                                val resolver = context.contentResolver
+                                val uri =
+                                    resolver.insert(
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                        values
+                                    )
+                                uri?.let {
+                                    photoUri = it
+                                    launcherCamera.launch(it)
+                                }
+                            } else {
+                                val rationale = "Ijin kamera diperlukan untuk mengambil gambar"
+                                EasyPermissions.requestPermissions(
+                                    PermissionRequest.Builder(
+                                        context as ComponentActivity,
+                                        CAMERA_PERMISSION_CODE,
+                                        *cameraPermission
+                                    )
+                                        .setRationale(rationale)
+                                        .build()
                                 )
-                            uri?.let {
-                                photoUri = it
-                                launcherCamera.launch(it)
                             }
-                        } else {
-                            val rationale = "Ijin kamera diperlukan untuk mengambil gambar"
-                            EasyPermissions.requestPermissions(
-                                PermissionRequest.Builder(
-                                    context as ComponentActivity,
-                                    CAMERA_PERMISSION_CODE,
-                                    *cameraPermission
-                                )
-                                    .setRationale(rationale)
-                                    .build()
-                            )
-                        }
-                    }) {
-                        Text(text = "Ambil gambar dengan Kamera")
+                        },
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                    ) {
+                        Text(
+                            text = "Ambil gambar dengan Kamera",
+                            color = Color.White
+
+                        )
                     }
 
 
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
-                Button(onClick = {
-                    val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
-                    val imageBody = photoUri?.let { uri ->
-                        val inputStream = context.contentResolver.openInputStream(uri)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        val adjustedBitmap = adjustImageOrientation(context, uri)
-                        val file = createTempFileWithBitmap(
-                            adjustedBitmap,
-                            "upload",
-                            ".jpeg",
-                            context.cacheDir
-                        )
-                        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        MultipartBody.Part.createFormData("file", file.name, requestFile)
-                    }
+                Button(
+                    onClick = {
+                        val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
+                        val imageBody = photoUri?.let { uri ->
+                            val inputStream = context.contentResolver.openInputStream(uri)
+                            val bitmap = BitmapFactory.decodeStream(inputStream)
+                            val adjustedBitmap = adjustImageOrientation(context, uri)
+                            val file = createTempFileWithBitmap(
+                                adjustedBitmap,
+                                "upload",
+                                ".jpeg",
+                                context.cacheDir
+                            )
+                            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                            MultipartBody.Part.createFormData("file", file.name, requestFile)
+                        }
 
-                    if (imageBody != null) {
-                        viewModel.uploadImage(categoryBody, imageBody)
-                    }
-                }) {
-                    Text("Unggah")
+                        if (imageBody != null) {
+                            viewModel.uploadImage(categoryBody, imageBody)
+                        }
+                    },
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                ) {
+                    Text(
+                        text = "Unggah",
+                        color = Color.White
+
+                    )
                 }
 
 
@@ -243,14 +263,3 @@ private fun createTempFileWithBitmap(
 }
 
 
-//@Composable
-//@Preview
-//fun UploadScreenPreview() {
-//    MaterialTheme {
-//        UploadScreen(
-//            viewModel = UploadViewModel(
-//
-//            )
-//        )
-//    }
-//}
