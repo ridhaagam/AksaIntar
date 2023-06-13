@@ -14,12 +14,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,7 +67,7 @@ fun ColorScreen(navController: NavController) {
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
     Scaffold(topBar = {
-        TopAppBar(title = { Text("Halaman Deteksi Warna", style =MaterialTheme.typography.body1, color = warna ) }, navigationIcon = {
+        TopAppBar(title = { Text("Halaman Deteksi Warna") }, navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -94,7 +92,7 @@ fun ColorScreen(navController: NavController) {
                 Spacer(modifier = Modifier.padding(20.dp))
 
                 val scaledBitmap = Bitmap.createScaledBitmap(it, imageSize, imageSize, false)
-                TFHelper.classifyColor(scaledBitmap) { classification ->
+                TFHelper.ClassifyColor(scaledBitmap) { classification ->
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -102,8 +100,15 @@ fun ColorScreen(navController: NavController) {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Warna yang terdeteksi adalah :  ", style =MaterialTheme.typography.body1, color = warna )
-                        Text(text = classification, color = warna, fontSize = 24.sp, style =MaterialTheme.typography.body1 )
+                        Text(
+                            text = "Warna yang terdeteksi adalah :  ",
+                            color = warna
+                        )
+                        Text(
+                            text = classification,
+                            color = warna,
+                            fontSize = 24.sp,
+                        )
                         Toast.makeText(
                             context,
                             "Warna yang terdeteksi adalah $classification",
@@ -120,45 +125,49 @@ fun ColorScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                OutlinedButton(onClick = {
-                    launcherGallery.launch("image/*")
-                },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        backgroundColor = Color.Transparent,
-                    ),
-                    border = BorderStroke(2.dp, colors.primary),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
-                    Text(text = "Ambil gambar dari galeri", style =MaterialTheme.typography.body1, color = warna )
+                Button(
+                    onClick = {
+                        launcherGallery.launch("image/*")
+                    },
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                ) {
+                    Text(
+                        text = "Ambil gambar dari galeri",
+                        color = Color.White
+
+                    )
                 }
 
-                OutlinedButton(onClick = {
-                    if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
-                        val values = ContentValues()
-                        val resolver = context.contentResolver
-                        val uri = resolver.insert(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
-                        )
-                        uri?.let {
-                            photoUri = it
-                            launcherCamera.launch(it)
+                Button(
+                    onClick = {
+                        if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
+                            val values = ContentValues()
+                            val resolver = context.contentResolver
+                            val uri = resolver.insert(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
+                            )
+                            uri?.let {
+                                photoUri = it
+                                launcherCamera.launch(it)
+                            }
+                        } else {
+                            val rationale = "Izin Kamera dibutuhkan untuk mengambil gambar"
+                            EasyPermissions.requestPermissions(
+                                PermissionRequest.Builder(
+                                    context as ComponentActivity,
+                                    CAMERA_PERMISSION_CODE,
+                                    *cameraPermission
+                                ).setRationale(rationale).build()
+                            )
                         }
-                    } else {
-                        val rationale = "Izin Kamera dibutuhkan untuk mengambil gambar"
-                        EasyPermissions.requestPermissions(
-                            PermissionRequest.Builder(
-                                context as ComponentActivity,
-                                CAMERA_PERMISSION_CODE,
-                                *cameraPermission
-                            ).setRationale(rationale).build()
-                        )
-                    }
-                },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        backgroundColor = Color.Transparent,
-                    ),
-                    border = BorderStroke(2.dp, colors.primary),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
-                    Text(text = "Ambil gambar dengan kamera", style =MaterialTheme.typography.body1, color = warna )
+                    },
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                ) {
+                    Text(
+                        text = "Ambil gambar dengan kamera",
+                        color = Color.White
+
+                    )
                 }
             }
         }
@@ -168,20 +177,10 @@ fun ColorScreen(navController: NavController) {
 
 private fun loadBitmapFromUri(context: Context, uri: Uri): Bitmap? {
     return if (Build.VERSION.SDK_INT < 28) {
-        // Jika SDK Android < 28 (versi sebelum Android 9.0), gunakan metode lama untuk mendapatkan bitmap dari URI
         MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
     } else {
-        // Jika SDK Android >= 28 (versi Android 9.0 atau lebih baru), gunakan ImageDecoder untuk mendecode bitmap dari URI
         val source = ImageDecoder.createSource(context.contentResolver, uri)
         val bitmap = ImageDecoder.decodeBitmap(source)
-        bitmap.copy(Bitmap.Config.ARGB_8888, true) // Konversi ke Config#ARGB_8888
+        bitmap.copy(Bitmap.Config.ARGB_8888, true)
     }
 }
-
-//@Composable
-//@Preview(showBackground = true)
-//fun DefaultPreview() {
-//    AksaIntarTheme {
-//        ColorScreen()
-//    }
-//}

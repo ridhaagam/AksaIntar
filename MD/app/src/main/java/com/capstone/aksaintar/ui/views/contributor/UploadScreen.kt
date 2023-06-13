@@ -14,9 +14,7 @@ import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -55,11 +53,6 @@ fun UploadScreen(
 
 ) {
 
-    val warna = if (isSystemInDarkTheme()) {
-        Color.White
-    } else {
-        Color.Black
-    }
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     var category by remember { mutableStateOf("") }
@@ -87,11 +80,10 @@ fun UploadScreen(
 
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
-    // Display image if there is one
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Halaman Kontribusi", style =MaterialTheme.typography.body1 , color = warna) },
+                title = { Text("Halaman Kontribusi") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -116,18 +108,19 @@ fun UploadScreen(
 
                 }
 
-//                Spacer(modifier = Modifier.padding(5.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
+
                         .padding(horizontal = 16.dp)
                         .semantics {
                             contentDescription = "Kolom Kategori"
                         },
                     value = category,
                     onValueChange = { category = it },
-                    label = { Text("Kategori", style =MaterialTheme.typography.body1 ) }
+                    label = { Text("Kategori") }
 
 
                 )
@@ -138,77 +131,82 @@ fun UploadScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    OutlinedButton(onClick = { launcherGallery.launch("image/*") },
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = Color.Transparent,
-                        ),
-                        border = BorderStroke(2.dp, MaterialTheme.colors.primary),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
-                        Text("Ambil gambar dari Galeri", style =MaterialTheme.typography.body1, color = warna )
+                    Button(
+                        onClick = { launcherGallery.launch("image/*") },
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                    ) {
+                        Text(
+                            text = "Ambil gambar dari Galeri",
+                            color = Color.White
+
+                        )
                     }
-                    OutlinedButton(onClick = {
-                        if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
-                            val values = ContentValues()
-                            val resolver = context.contentResolver
-                            val uri =
-                                resolver.insert(
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                    values
+                    Button(
+                        onClick = {
+                            if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
+                                val values = ContentValues()
+                                val resolver = context.contentResolver
+                                val uri =
+                                    resolver.insert(
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                        values
+                                    )
+                                uri?.let {
+                                    photoUri = it
+                                    launcherCamera.launch(it)
+                                }
+                            } else {
+                                val rationale = "Ijin kamera diperlukan untuk mengambil gambar"
+                                EasyPermissions.requestPermissions(
+                                    PermissionRequest.Builder(
+                                        context as ComponentActivity,
+                                        CAMERA_PERMISSION_CODE,
+                                        *cameraPermission
+                                    )
+                                        .setRationale(rationale)
+                                        .build()
                                 )
-                            uri?.let {
-                                photoUri = it
-                                launcherCamera.launch(it)
                             }
-                        } else {
-                            val rationale = "Ijin kamera diperlukan untuk mengambil gambar"
-                            EasyPermissions.requestPermissions(
-                                PermissionRequest.Builder(
-                                    context as ComponentActivity,
-                                    CAMERA_PERMISSION_CODE,
-                                    *cameraPermission
-                                )
-                                    .setRationale(rationale)
-                                    .build()
-                            )
-                        }
-                    },
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = Color.Transparent,
-                        ),
-                        border = BorderStroke(2.dp, MaterialTheme.colors.primary),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
-                        Text(text = "Ambil gambar dengan Kamera", style =MaterialTheme.typography.body1, color = warna )
+                        },
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                    ) {
+                        Text(
+                            text = "Ambil gambar dengan Kamera",
+                            color = Color.White
+
+                        )
                     }
 
 
                 }
-//                Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedButton(onClick = {
-                    val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
-                    val imageBody = photoUri?.let { uri ->
-                        val inputStream = context.contentResolver.openInputStream(uri)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        val adjustedBitmap = adjustImageOrientation(context, uri)
-                        val file = createTempFileWithBitmap(
-                            adjustedBitmap,
-                            "upload",
-                            ".jpeg",
-                            context.cacheDir
-                        )
-                        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        MultipartBody.Part.createFormData("file", file.name, requestFile)
-                    }
+                Button(
+                    onClick = {
+                        val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
+                        val imageBody = photoUri?.let { uri ->
+                            val inputStream = context.contentResolver.openInputStream(uri)
+                            val bitmap = BitmapFactory.decodeStream(inputStream)
+                            val adjustedBitmap = adjustImageOrientation(context, uri)
+                            val file = createTempFileWithBitmap(
+                                adjustedBitmap,
+                                "upload",
+                                ".jpeg",
+                                context.cacheDir
+                            )
+                            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                            MultipartBody.Part.createFormData("file", file.name, requestFile)
+                        }
 
-                    if (imageBody != null) {
-                        viewModel.uploadImage(categoryBody, imageBody)
-                    }
-                },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        backgroundColor = Color.Transparent,
-                    ),
-                    border = BorderStroke(2.dp, MaterialTheme.colors.primary),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
-                    Text("Unggah", style =MaterialTheme.typography.body1, color = warna )
+                        if (imageBody != null) {
+                            viewModel.uploadImage(categoryBody, imageBody)
+                        }
+                    },
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
+                ) {
+                    Text(
+                        text = "Unggah",
+                        color = Color.White
+
+                    )
                 }
 
 
@@ -265,14 +263,3 @@ private fun createTempFileWithBitmap(
 }
 
 
-//@Composable
-//@Preview
-//fun UploadScreenPreview() {
-//    MaterialTheme {
-//        UploadScreen(
-//            viewModel = UploadViewModel(
-//
-//            )
-//        )
-//    }
-//}

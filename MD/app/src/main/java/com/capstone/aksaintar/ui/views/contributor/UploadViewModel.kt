@@ -2,7 +2,6 @@ package com.capstone.aksaintar.ui.views.contributor
 
 import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.capstone.aksaintar.data.ApiConfig
@@ -16,7 +15,6 @@ import retrofit2.Response
 class UploadViewModel(private val context: Context) : ViewModel() {
 
     private val _uploadImage = MutableLiveData<UploadResponse>()
-    val uploadImage: LiveData<UploadResponse> = _uploadImage
 
 
     fun uploadImage(category: RequestBody, file: MultipartBody.Part) {

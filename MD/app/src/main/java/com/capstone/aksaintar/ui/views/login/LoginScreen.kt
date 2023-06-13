@@ -26,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
-private const val RC_SIGN_IN = 123
 private const val TAG = "LoginScreen"
 
 
@@ -111,7 +110,7 @@ fun LoginScreen(
                     modifier = Modifier.size(26.dp)
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "Masuk dengan Google", fontWeight = FontWeight.Bold, style =MaterialTheme.typography.body1, color = warna )
+                Text(text = "Masuk dengan Google", fontWeight = FontWeight.Bold, color = warna)
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -120,17 +119,9 @@ fun LoginScreen(
 
             ) {
 
-            Text(text = "Masuk sebagai tamu", fontWeight = FontWeight.Bold, color = warna, style =MaterialTheme.typography.body1 )
+            Text(text = "Masuk sebagai tamu", fontWeight = FontWeight.Bold, color = warna)
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LoginScreen(
-        onSignIn = {},
-        navigateToHomeScreen = {},
-        startGoogleSignIn = {}
-    )
-}
+
