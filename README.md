@@ -110,9 +110,10 @@ Then, to make it easier for users to login, we want to add Google Authentication
 
 </details>
 
- ### Cloud Architecture
- <summary>Architecture </summary>
+### Cloud Architecture
+<summary>Architecture </summary>
+<details>
 
-https://www.figma.com/file/Sb5Hg2zPrXr55fPlBZ5Lwh/Untitled?type=whiteboard&node-id=0%3A1&t=yzP1nZ2wmR5l6t9y-1
+![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/cdf84d90-ec5d-4633-ae08-0f26fea5870f)
 
 </details>
