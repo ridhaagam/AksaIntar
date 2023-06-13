@@ -32,7 +32,7 @@ fun HomeScreen(
     signOut: () -> Unit
 ) {
 
-    val isGuest = rememberSaveable { mutableStateOf(email.value == "Guest") }
+    val isGuest = rememberSaveable { mutableStateOf(email.value == "Tamu") }
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
@@ -47,15 +47,13 @@ fun HomeScreen(
         Text(
             modifier = Modifier.padding(start = 25.dp),
             text = "Hai, ${email.value ?: ""}\nSelamat Datang di Aksaintar",
-            style = MaterialTheme.typography.h6.copy(
-                fontWeight = FontWeight.ExtraBold,
-                textAlign = TextAlign.Start
-            )
+            style =MaterialTheme.typography.body1
         )
         Text(
             text = "Silahkan pilih fitur yang ingin digunakan",
             textAlign = TextAlign.Start,
-            modifier = Modifier.padding(top = 10.dp, start = 25.dp)
+            modifier = Modifier.padding(top = 10.dp, start = 25.dp),
+            style =MaterialTheme.typography.body1
         )
         Spacer(modifier = Modifier.height(150.dp))
         LazyColumn(
@@ -86,7 +84,7 @@ fun HomeScreen(
                         onClick = navToUploadScreen,
                         enabled = !isGuest.value
                     )
-                    Spacer(modifier = Modifier.height(150.dp))
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
 
                 item {
@@ -107,7 +105,7 @@ fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
         border = BorderStroke(2.dp, MaterialTheme.colors.primary),
         shape = RoundedCornerShape(20),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.White
+            backgroundColor = Color.Transparent
         ),
         onClick = onClick,
         modifier = Modifier
@@ -120,7 +118,8 @@ fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
             text = text,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center, // Teks di tengah tombol
-            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)
+            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
+            style =MaterialTheme.typography.body1
         )
     }
 }

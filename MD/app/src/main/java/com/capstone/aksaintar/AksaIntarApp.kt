@@ -64,7 +64,7 @@ fun AksaIntarApp(
 
     LaunchedEffect(account) {
         if (account != null) {
-            email.value = account?.displayName ?: "Guest" // Update nilai email saat pengguna sign in dengan akun Google
+            email.value = account?.displayName ?: "Tamu" // Update nilai email saat pengguna sign in dengan akun Google
             navController.navigate(Screen.Home.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
@@ -73,7 +73,7 @@ fun AksaIntarApp(
                 launchSingleTop = true
             }
         } else {
-            email.value = "Guest" // Set nilai email sebagai "Guest" saat pengguna sign out
+            email.value = "Tamu" // Set nilai email sebagai "Guest" saat pengguna sign out
             navController.navigate(Screen.Login.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = false

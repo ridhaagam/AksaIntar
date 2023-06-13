@@ -14,12 +14,15 @@ import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -52,7 +55,11 @@ fun UploadScreen(
 
 ) {
 
-
+    val warna = if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        Color.Black
+    }
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     var category by remember { mutableStateOf("") }
@@ -84,7 +91,7 @@ fun UploadScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Halaman Kontribusi") },
+                title = { Text("Halaman Kontribusi", style =MaterialTheme.typography.body1 , color = warna) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -109,7 +116,7 @@ fun UploadScreen(
 
                 }
 
-                Spacer(modifier = Modifier.padding(10.dp))
+//                Spacer(modifier = Modifier.padding(5.dp))
 
                 TextField(
                     modifier = Modifier
@@ -120,21 +127,26 @@ fun UploadScreen(
                         },
                     value = category,
                     onValueChange = { category = it },
-                    label = { Text("Kategori") }
+                    label = { Text("Kategori", style =MaterialTheme.typography.body1 ) }
 
 
                 )
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    Button(onClick = { launcherGallery.launch("image/*") }) {
-                        Text("Ambil gambar dari Galeri")
+                    OutlinedButton(onClick = { launcherGallery.launch("image/*") },
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            backgroundColor = Color.Transparent,
+                        ),
+                        border = BorderStroke(2.dp, MaterialTheme.colors.primary),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
+                        Text("Ambil gambar dari Galeri", style =MaterialTheme.typography.body1, color = warna )
                     }
-                    Button(onClick = {
+                    OutlinedButton(onClick = {
                         if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
                             val values = ContentValues()
                             val resolver = context.contentResolver
@@ -159,14 +171,19 @@ fun UploadScreen(
                                     .build()
                             )
                         }
-                    }) {
-                        Text(text = "Ambil gambar dengan Kamera")
+                    },
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            backgroundColor = Color.Transparent,
+                        ),
+                        border = BorderStroke(2.dp, MaterialTheme.colors.primary),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
+                        Text(text = "Ambil gambar dengan Kamera", style =MaterialTheme.typography.body1, color = warna )
                     }
 
 
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
-                Button(onClick = {
+//                Spacer(modifier = Modifier.padding(5.dp))
+                OutlinedButton(onClick = {
                     val categoryBody = category.toRequestBody("text/plain".toMediaTypeOrNull())
                     val imageBody = photoUri?.let { uri ->
                         val inputStream = context.contentResolver.openInputStream(uri)
@@ -185,8 +202,13 @@ fun UploadScreen(
                     if (imageBody != null) {
                         viewModel.uploadImage(categoryBody, imageBody)
                     }
-                }) {
-                    Text("Unggah")
+                },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        backgroundColor = Color.Transparent,
+                    ),
+                    border = BorderStroke(2.dp, MaterialTheme.colors.primary),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
+                    Text("Unggah", style =MaterialTheme.typography.body1, color = warna )
                 }
 
 

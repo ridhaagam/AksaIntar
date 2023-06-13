@@ -13,13 +13,16 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,7 +43,11 @@ fun ImagePicker(navController: NavController) {
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-
+    val warna = if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        Color.Black
+    }
     // rememberLauncherForActivityResult menyimpan status komposisi saat terjadi perubahan konfigurasi
     val launcherGallery = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -65,7 +72,7 @@ fun ImagePicker(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Halaman Deteksi Objek") },
+                title = { Text("Halaman Deteksi Objek", style =MaterialTheme.typography.body1 ) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -103,8 +110,8 @@ fun ImagePicker(navController: NavController) {
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Gambar yang terdeteksi adalah:")
-                            Text(text = classification, color = colors.primary, fontSize = 24.sp)
+                            Text(text = "Gambar yang terdeteksi adalah:",style =MaterialTheme.typography.body1, color = warna )
+                            Text(text = classification, color = warna, fontSize = 24.sp, style =MaterialTheme.typography.body1 )
 //                            Toast.makeText(context, "Gambar yang terdeteksi  $classification", Toast.LENGTH_SHORT).show()
                             if (classification == "Tidak Diketahui") {
                                 Toast.makeText(context, "Gambar yang terdeteksi $classification, coba lagi", Toast.LENGTH_SHORT).show()
@@ -115,20 +122,24 @@ fun ImagePicker(navController: NavController) {
                     }
                 }
 
-                Spacer(modifier = Modifier.padding(20.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 Column(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Button(onClick = {
+                    OutlinedButton(onClick = {
                         launcherGallery.launch("image/*")
-                    }) {
-                        Text(text = "Ambil Gambar dari Galeri")
+                    },colors = ButtonDefaults.outlinedButtonColors(
+                        backgroundColor = Color.Transparent,
+                    ),
+                        border = BorderStroke(2.dp, colors.primary),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
+                        Text(text = "Ambil Gambar dari Galeri", style =MaterialTheme.typography.body1, color = warna )
                     }
 
-                    Button(onClick = {
+                    OutlinedButton(onClick = {
                         if (EasyPermissions.hasPermissions(context, *cameraPermission)) {
                             val values = ContentValues()
                             val resolver = context.contentResolver
@@ -153,9 +164,16 @@ fun ImagePicker(navController: NavController) {
                                     .build()
                             )
                         }
-                    }) {
+                    },
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            backgroundColor = Color.Transparent,
+                        ),
+                        border = BorderStroke(2.dp, colors.primary),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(20),) {
                         Text(
                             text = "Ambil Gambar dengan Kamera",
+                            style =MaterialTheme.typography.body1,
+                            color = warna
                         )
 
                     }
