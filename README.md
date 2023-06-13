@@ -117,3 +117,11 @@ Then, to make it easier for users to login, we want to add Google Authentication
 ![image](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/78722645/3548b0ac-e139-485e-bc00-93794771a67a)
 
 </details>
+ 
+### API Documentation
+<details>
+<summary>Postman </summary>
+
+https://documenter.getpostman.com/view/18310989/2s93sf1qdh
+
+</details>
