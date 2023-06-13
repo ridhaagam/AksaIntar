@@ -4,5 +4,27 @@
     <string name="default_web_client_id">86074295974-hfmgflcg0nm4sct4bk17qjpe748kl8l5.apps.googleusercontent.com</string>
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profile</string>
+    <string name="color_appbar_title">Halaman Deteksi Warna</string>
+    <string name="back_button">Kembali</string>
+    <string name="image_preview">Gambar Pratinjau</string>
+    <string name="color_result_text">\"Warna yang terdeteksi adalah :  \"</string>
+    <string name="gallery_button_text">Ambil gambar dari galeri</string>
+    <string name="camera_permission_text">Izin Kamera dibutuhkan untuk mengambil gambar</string>
+    <string name="camera_button_text">Ambil gambar dengan kamera</string>
+    <string name="contribution_title_text">Halaman Kontribusi</string>
+    <string name="category_label">Kategori</string>
+    <string name="upload_text">Unggah</string>
+    <string name="upload_success">Unggah Berhasil</string>
+    <string name="upload_error">Unggah Gagal</string>
+    <string name="title_object_text">Halaman Deteksi Objek</string>
+    <string name="object_result_text">Gambar yang terdeteksi adalah:</string>
+    <string name="guide_text">Silahkan pilih fitur yang ingin digunakan</string>
+    <string name="object_button">Deteksi Objek</string>
+    <string name="color_button">Deteksi Warna</string>
+    <string name="contribution_button">Kontribusi</string>
+    <string name="signout_button">Keluar</string>
+    <string name="login_with_google">Masuk dengan Google</string>
+    <string name="login_as_guest">Masuk sebagai tamu</string>
+    <string name="sign_in_failed">Google sign in failed</string>
 
 </resources>

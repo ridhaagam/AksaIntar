@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.capstone.aksaintar.R
 import com.capstone.aksaintar.data.ApiConfig
 import com.capstone.aksaintar.data.UploadResponse
 import okhttp3.MultipartBody
@@ -25,10 +26,10 @@ class UploadViewModel(private val context: Context) : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     _uploadImage.value = response.body()
-                    Toast.makeText(context, "Upload Successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.upload_success), Toast.LENGTH_SHORT).show()
 
                 } else {
-                    Toast.makeText(context, "Upload Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.upload_error), Toast.LENGTH_SHORT).show()
                 }
             }
 

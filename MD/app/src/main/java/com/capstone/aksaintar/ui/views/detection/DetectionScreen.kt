@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,12 +70,12 @@ fun ImagePicker(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Halaman Deteksi Objek") },
+                title = { Text(stringResource(R.string.title_object_text)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Kembali ke halaman utama"
+                            contentDescription = stringResource(R.string.back_button)
                         )
                     }
                 }
@@ -84,7 +85,6 @@ fun ImagePicker(navController: NavController) {
                 Modifier
                     .fillMaxSize()
                     .semantics {
-//                        contentDescription = "Halaman Deteksi Objek"
                     },
 
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,7 +94,7 @@ fun ImagePicker(navController: NavController) {
                 bitmap?.let {
                     Image(
                         bitmap = it.asImageBitmap(),
-                        contentDescription = "Gambar Pratinjau ",
+                        contentDescription = stringResource(R.string.image_preview),
                         Modifier.size(400.dp)
                     )
 
@@ -107,7 +107,7 @@ fun ImagePicker(navController: NavController) {
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Gambar yang terdeteksi adalah:", color = warna)
+                            Text(text = stringResource(R.string.object_result_text), color = warna)
                             Text(text = classification, color = warna, fontSize = 24.sp)
 //                            Toast.makeText(context, "Gambar yang terdeteksi  $classification", Toast.LENGTH_SHORT).show()
                             if (classification == "Tidak Diketahui") {
@@ -141,7 +141,7 @@ fun ImagePicker(navController: NavController) {
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                     ) {
                         Text(
-                            text = "Ambil Gambar dari Galeri", color = Color.White
+                            text = stringResource(R.string.gallery_button_text), color = Color.White
                         )
                     }
 
@@ -160,7 +160,7 @@ fun ImagePicker(navController: NavController) {
                                     launcherCamera.launch(it)
                                 }
                             } else {
-                                val rationale = "Izin kamera diperlukan untuk mengambil gambar"
+                                val rationale = R.string.camera_permission_text
                                 EasyPermissions.requestPermissions(
                                     PermissionRequest.Builder(
                                         context as ComponentActivity,
@@ -175,7 +175,7 @@ fun ImagePicker(navController: NavController) {
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                     ) {
                         Text(
-                            text = "Ambil Gambar dengan Kamera",
+                            text = stringResource(R.string.camera_button_text),
                             color = Color.White
                         )
 
@@ -192,7 +192,7 @@ private fun loadBitmapFromUri(context: Context, uri: Uri): Bitmap? {
     } else {
         val source = ImageDecoder.createSource(context.contentResolver, uri)
         val bitmap = ImageDecoder.decodeBitmap(source)
-        bitmap.copy(Bitmap.Config.ARGB_8888, true) // Konversi ke Config#ARGB_8888
+        bitmap.copy(Bitmap.Config.ARGB_8888, true)
     }
 }
 

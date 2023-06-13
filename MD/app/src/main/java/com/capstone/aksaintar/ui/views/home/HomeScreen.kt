@@ -15,12 +15,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.capstone.aksaintar.R
 
 
 @Composable
@@ -51,7 +53,7 @@ fun HomeScreen(
             )
         )
         Text(
-            text = "Silahkan pilih fitur yang ingin digunakan",
+            text = stringResource(R.string.guide_text),
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(top = 10.dp, start = 25.dp),
         )
@@ -63,13 +65,13 @@ fun HomeScreen(
             ) {
             item {
                 ButtonOutlined(
-                    text = "Deteksi Objek", onClick = navToCameraScreen
+                    text = stringResource(R.string.object_button), onClick = navToCameraScreen
                 )
             }
 
             item {
                 ButtonOutlined(
-                    text = "Deteksi Warna", onClick = navToColorScreen
+                    text = stringResource(R.string.color_button), onClick = navToColorScreen
                 )
 
             }
@@ -78,14 +80,14 @@ fun HomeScreen(
             if (email.value != "Tamu") {
                 item {
                     ButtonOutlined(
-                        text = "Kontribusi", onClick = navToUploadScreen, enabled = !isGuest.value
+                        text = stringResource(R.string.contribution_button), onClick = navToUploadScreen, enabled = !isGuest.value
                     )
                     Spacer(modifier = Modifier.height(50.dp))
                 }
 
                 item {
                     ButtonOutlined(
-                        text = "Keluar", onClick = signOut, enabled = !isGuest.value
+                        text = stringResource(R.string.signout_button), onClick = signOut, enabled = !isGuest.value
                     )
                 }
             }
@@ -111,7 +113,7 @@ fun ButtonOutlined(text: String, onClick: () -> Unit, enabled: Boolean = true) {
         Text(
             text = text,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center, // Teks di tengah tombol
+            textAlign = TextAlign.Center,
             modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
         )
     }

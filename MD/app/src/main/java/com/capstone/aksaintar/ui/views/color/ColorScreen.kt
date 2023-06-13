@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +48,6 @@ fun ColorScreen(navController: NavController) {
     } else {
         Color.Black
     }
-    // rememberLauncherForActivityResult menyimpan status komposisi saat terjadi perubahan konfigurasi
     val launcherGallery =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent(),
             onResult = {
@@ -67,11 +67,11 @@ fun ColorScreen(navController: NavController) {
     val cameraPermission = arrayOf(Manifest.permission.CAMERA)
 
     Scaffold(topBar = {
-        TopAppBar(title = { Text("Halaman Deteksi Warna") }, navigationIcon = {
+        TopAppBar(title = { Text(stringResource(R.string.color_appbar_title)) }, navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_back),
-                    contentDescription = "Kembali ke halaman utama"
+                    contentDescription = stringResource(R.string.back_button)
                 )
             }
         })
@@ -85,7 +85,7 @@ fun ColorScreen(navController: NavController) {
             bitmap?.let {
                 Image(
                     bitmap = it.asImageBitmap(),
-                    contentDescription = "Gambar Pratinjau",
+                    contentDescription = stringResource(R.string.image_preview),
                     Modifier.size(400.dp)
                 )
 
@@ -101,7 +101,7 @@ fun ColorScreen(navController: NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Warna yang terdeteksi adalah :  ",
+                            text = stringResource(R.string.color_result_text),
                             color = warna
                         )
                         Text(
@@ -132,7 +132,7 @@ fun ColorScreen(navController: NavController) {
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                 ) {
                     Text(
-                        text = "Ambil gambar dari galeri",
+                        text = stringResource(R.string.gallery_button_text),
                         color = Color.White
 
                     )
@@ -151,7 +151,7 @@ fun ColorScreen(navController: NavController) {
                                 launcherCamera.launch(it)
                             }
                         } else {
-                            val rationale = "Izin Kamera dibutuhkan untuk mengambil gambar"
+                            val rationale = R.string.camera_permission_text
                             EasyPermissions.requestPermissions(
                                 PermissionRequest.Builder(
                                     context as ComponentActivity,
@@ -164,7 +164,7 @@ fun ColorScreen(navController: NavController) {
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                 ) {
                     Text(
-                        text = "Ambil gambar dengan kamera",
+                        text = stringResource(R.string.camera_button_text),
                         color = Color.White
 
                     )

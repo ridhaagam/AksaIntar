@@ -44,12 +44,11 @@ class MainActivity : ComponentActivity() {
                     val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                     try {
                         val account = task.getResult(ApiException::class.java)
-                        // TODO: Simpan atau gunakan informasi akun Google
                         println(account)
                         _googleAccount.value = account
                         saveLoginSession(account)
                     } catch (e: ApiException) {
-                        Log.w(TAG, "Google sign in failed", e)
+                        Log.w(TAG, getString(R.string.sign_in_failed), e)
                     }
                 }
             }

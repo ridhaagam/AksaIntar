@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -83,12 +84,12 @@ fun UploadScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Halaman Kontribusi") },
+                title = { Text(stringResource(R.string.contribution_title_text)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Kembali ke halaman utama"
+                            contentDescription = stringResource(R.string.back_button)
                         )
                     }
                 }
@@ -101,7 +102,7 @@ fun UploadScreen(
                 bitmap?.let {
                     Image(
                         bitmap = it.asImageBitmap(),
-                        contentDescription = "Gambar Pratinjau",
+                        contentDescription = stringResource(R.string.image_preview),
                         Modifier.size(400.dp)
                     )
 
@@ -120,7 +121,7 @@ fun UploadScreen(
                         },
                     value = category,
                     onValueChange = { category = it },
-                    label = { Text("Kategori") }
+                    label = { Text(stringResource(R.string.category_label)) }
 
 
                 )
@@ -136,7 +137,7 @@ fun UploadScreen(
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                     ) {
                         Text(
-                            text = "Ambil gambar dari Galeri",
+                            text = stringResource(R.string.gallery_button_text),
                             color = Color.White
 
                         )
@@ -156,7 +157,7 @@ fun UploadScreen(
                                     launcherCamera.launch(it)
                                 }
                             } else {
-                                val rationale = "Ijin kamera diperlukan untuk mengambil gambar"
+                                val rationale = R.string.camera_permission_text
                                 EasyPermissions.requestPermissions(
                                     PermissionRequest.Builder(
                                         context as ComponentActivity,
@@ -171,7 +172,7 @@ fun UploadScreen(
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                     ) {
                         Text(
-                            text = "Ambil gambar dengan Kamera",
+                            text = stringResource(R.string.camera_button_text),
                             color = Color.White
 
                         )
@@ -203,7 +204,7 @@ fun UploadScreen(
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(20),
                 ) {
                     Text(
-                        text = "Unggah",
+                        text = stringResource(R.string.upload_text),
                         color = Color.White
 
                     )
