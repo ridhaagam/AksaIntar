@@ -71,7 +71,7 @@ As the Mobile Development team, we use native Kotlin and Android Studio to creat
  ### App Documentation
 <details>
 <summary>Application UserFlow </summary>
- <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/ed2cdb9a-ffa6-4638-8a68-5ba1e9f5be09" width="100%"
+ <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/ed2cdb9a-ffa6-4638-8a68-5ba1e9f5be09" width="100%"/>
 
 
 
