@@ -121,7 +121,7 @@ Below are several libraries that we use for application development:
 ## CLOUD COMPUTING
 ### Overview
 For the cloud computing path, we create an API upload image for the apps. 
-Then, to make it easier for users to login, we want to add Google Authentication. We use the Google Cloud Platform ( Compute Engine or App Engine and Cloud Storage ) as the medium to deploy the project, and we may also use other third-party APIs as needed during development.
+Then, to make it easier for users to login, we want to add Google Authentication. We use the Google Cloud Platform ( App Engine, Cloud Storage and SQL ) as the medium to deploy the project, and we may also use other third-party APIs as needed during development.
  
 ### Google Cloud Platform
 <details>
