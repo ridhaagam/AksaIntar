@@ -68,6 +68,44 @@ Our model in this application is using MobileNetV2. We did some modification and
 
 ### Overview
 As the Mobile Development team, we use native Kotlin and Android Studio to create our Android app. Our responsibilities is setting up the Android app environment, designing the user interface through Figma, and implementing both object detection and color detection features for the app's functionalities. And once the application is complete, we monitor and fix any issues found to ensure the application runs as it should.
+ ### App Documentation
+<details>
+<summary>Application Flowchart </summary>
+
+
+
+</details>
+ 
+ <details>
+<summary>Application Screen Detail </summary>
+
+
+
+</details>
+ 
+ <details>
+<summary>Application Demo </summary>
+
+
+
+</details>
+ 
+ <details>
+<summary>Figma Link </summary>
+
+This is the link to access the [Figma design](https://www.figma.com/file/iiWVTmkrsJye1XFBoKl1NQ/Aksa-Intar-App?node-id=0%3A1&t=zTcY4mvBm9BMwuEE-1).
+
+</details>
+
+ ### Library
+Below are several libraries that we use for application development:
+
+ * [Glide](https://github.com/bumptech/glide)
+ * [Dagger Hilt](https://dagger.dev/hilt/)
+ * [Retrofit](https://github.com/square/retrofit)
+ * [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+ * [Layouting](https://developer.android.com/jetpack/compose/lists?hl=id)
+ * [Shared Preferences](https://developer.android.com/training/data-storage/shared-preferences?hl=id)
  
 ## CLOUD COMPUTING
 ### Overview
