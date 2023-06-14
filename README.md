@@ -105,6 +105,13 @@ As the Mobile Development team, we use native Kotlin and Android Studio to creat
 
 
 
+
+
+https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71585270/d71059cf-6282-4bd3-b3aa-69f2eb58db4c
+
+
+
+
 </details>
  
  <details>
