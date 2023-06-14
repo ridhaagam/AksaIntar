@@ -16,7 +16,7 @@ People who have deficiencies must have their own challenges. An example of this 
 ## MACHINE LEARNING 
 
 ### Overview
-Part of machine learning in this application is detecting items. We utilize a dataset of nearby objects to build a model that can detect items. And developed it in TensorFlow-based machine learning solution. We use the MobileNetV2 type to modeling. 
+Part of machine learning in this application is detecting items and detecting color. We utilize a dataset of nearby objects to build a model that can detect items. And developed it in TensorFlow-based machine learning solution. We use the MobileNetV2 type to modeling. For the color detection, we build a model that can detect a color. We developed the model using the CNN Model. 
 
 ### Step in Deploy the Machine Learning 
 <details>
@@ -28,19 +28,22 @@ Part of machine learning in this application is detecting items. We utilize a da
 
 <details>
 <summary>Color Detection </summary>
-![Diagram Tanpa Judul drawio (4)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/28422eb6-d688-47a0-94aa-1795a9b22025)
+
+ ![Diagram Tanpa Judul drawio (4)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/28422eb6-d688-47a0-94aa-1795a9b22025)
+
 </details>
 
 ### Dataset and Data Preparation 
-The dataset we use for this model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download). This dataset contains (jumlah gambar dalam dataset) images. 
-For modeling, we use 2000 images. We split the dataset into training set of 1600 images and testing set of 400 images. And we do a rescale and augmentation on the images. 
+The dataset we use for this object detection model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download). This dataset contains (jumlah gambar dalam dataset) images. For modeling, we use <> images. We split the dataset into training set of <> images and testing set of <> images. And we do a rescale and augmentation on the images. 
+For the color detection, we use "bing image" pyhton library to download bulk of images form Bing.com.dataset and make it as a dataset for the color. The dataset can be download in <here>. For modeling, we use 2135 images. We split the dataset into training set of 1472 images and testing set of 663 images. 
 
 <details>
 <summary>Dataset</summary>
-You can take a look at our filtered dataset here: https://drive.google.com/drive/folders/16VpKYq1d1T67tmIX2h-GHPJzYjYUAb9w?usp=sharing
+You can take a look at our filtered dataset for the object detection here: https://drive.google.com/drive/folders/16VpKYq1d1T67tmIX2h-GHPJzYjYUAb9w?usp=sharing .
+And for the dataset of color objection, you can take a look in here : <>
 </details>
 
-### Model
+### Model of Object Detection
 Our model in this application is using MobileNetV2. We did some modification and adjustable to make the best model possible.
 <details>
 <summary>Model Summary</summary>
@@ -66,6 +69,36 @@ Our model in this application is using MobileNetV2. We did some modification and
 <summary>Loss</summary>
 
 <img width="261" alt="Screenshot 2023-05-31 044653" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/4a6b5aa7-d8cd-4fd9-9b30-a7311094f0a5">
+
+</details>
+
+
+### Model of Color Detection 
+Our model for the color detection in this application is using CNN Model . We did some modification and adjustable to make the best model possible.
+<details>
+<summary>Model Summary</summary>
+ 
+<img width="411" alt="Screenshot 2023-06-15 002836" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/9a9213dc-8c2f-43aa-a7de-1504a7499596">
+
+</details>
+
+<details>
+<summary>Model Flowchart</summary>
+
+<>
+
+</details>
+
+<details>
+<summary>Accuracy</summary>
+
+<img width="330" alt="Screenshot 2023-06-15 003126" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/8ca0e720-43a5-4d48-9d1b-fe1f51b6120d">
+
+</details>
+<details>
+<summary>Loss</summary>
+
+<img width="342" alt="Screenshot 2023-06-15 003135" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/ce077bf8-5825-4646-981b-7f157bddb70c">
 
 </details>
 
