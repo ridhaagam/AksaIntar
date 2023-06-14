@@ -84,13 +84,14 @@ As the Mobile Development team, we use native Kotlin and Android Studio to creat
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/886c0599-8bbd-43ec-abd8-e6fd9717e928" width="24%" /> 
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/580517be-eb0f-44c0-a70f-32e9cd5fd9cb" width="24%" />
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/5620eaff-05fd-4dca-9c5d-2fc8d7e29d3a" width="24%" />
-  <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/10cc202a-323f-4244-8573-32d19f2b5351" width="24%" />
+  <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/35958a2a-5de9-4847-86ef-328c9d86118c" width="24%" />
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/98f8e913-b86a-462f-bd2a-ac80a5cbea4f" width="24%" />
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/d23382d1-c9d6-433a-8e25-7751718808c3" width="24%" />
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/f2d02d3c-3966-4048-a3e2-441d5b429139" width="24%" />
 </p>
 
 </details>
+
 
  
  <details>
