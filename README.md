@@ -70,7 +70,8 @@ Our model in this application is using MobileNetV2. We did some modification and
 As the Mobile Development team, we use native Kotlin and Android Studio to create our Android app. Our responsibilities is setting up the Android app environment, designing the user interface through Figma, and implementing both object detection and color detection features for the app's functionalities. And once the application is complete, we monitor and fix any issues found to ensure the application runs as it should.
  ### App Documentation
 <details>
-<summary>Application Flowchart </summary>
+<summary>Application UserFlow </summary>
+ <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/ed2cdb9a-ffa6-4638-8a68-5ba1e9f5be09" width="100%"
 
 
 
