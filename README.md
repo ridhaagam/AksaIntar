@@ -21,15 +21,14 @@ Part of machine learning in this application is detecting items. We utilize a da
 ### Step in Deploy the Machine Learning 
 <details>
 <summary>Object detection </summary>
-![Diagram Tanpa Judul drawio (5)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/896b143e-2d24-43a3-a07c-9d5db17d27c4)
 
+![Diagram Tanpa Judul drawio (5)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/271b0f38-a9a0-4d8d-a10f-4d384ba66fed)
 
 </details>
 
+<details>
 <summary>Color Detection </summary>
-![Diagram Tanpa Judul drawio (4)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/1840049e-8eed-4a4f-850f-5f1c1308acf5)
-
-
+![Diagram Tanpa Judul drawio (4)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/28422eb6-d688-47a0-94aa-1795a9b22025)
 </details>
 
 ### Dataset and Data Preparation 
