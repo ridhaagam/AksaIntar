@@ -21,8 +21,14 @@ Part of machine learning in this application is detecting items. We utilize a da
 ### Step in Deploy the Machine Learning 
 <details>
 <summary>Object detection </summary>
+![Diagram Tanpa Judul drawio (5)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/896b143e-2d24-43a3-a07c-9d5db17d27c4)
 
-![flowchart of mobilenetv2 drawio](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/892a997e-b5a4-424d-bd61-999fe60a672e)
+
+</details>
+
+<summary>Color Detection </summary>
+![Diagram Tanpa Judul drawio (4)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/1840049e-8eed-4a4f-850f-5f1c1308acf5)
+
 
 </details>
 
@@ -89,8 +95,7 @@ As the Mobile Development team, we use native Kotlin and Android Studio to creat
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/98f8e913-b86a-462f-bd2a-ac80a5cbea4f" width="24%" />
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/d23382d1-c9d6-433a-8e25-7751718808c3" width="24%" />
   <img src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/83630070/f2d02d3c-3966-4048-a3e2-441d5b429139" width="24%" />
-</p>![Diagram Tanpa Judul drawio (5)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/963215be-0c21-4537-8a7f-65d07d282d10)
-
+</p>!
 
 </details>
 
