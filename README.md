@@ -48,27 +48,22 @@ Our model in this application is using MobileNetV2. We did some modification and
 <details>
 <summary>Model Summary</summary>
 
-<img width="517" alt="Screenshot 2023-05-31 043402" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/db5ad9b0-eaf7-4ab2-a12e-4b24fd05db98">
+![WhatsApp Image 2023-06-15 at 18 56 25](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/ae1f8798-1516-429a-80c4-9f63f24a443b)
 
 </details>
 
-<details>
-<summary>Model Flowchart</summary>
 
-<>
-
-</details>
 
 <details>
 <summary>Accuracy</summary>
 
-<img width="274" alt="Screenshot 2023-05-31 044543" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/4a6f85ee-e826-4acb-9903-160a24a88a64">
+![1](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/76d6a24e-d28f-4f26-9863-62e5d5531dca)
 
 </details>
 <details>
 <summary>Loss</summary>
 
-<img width="261" alt="Screenshot 2023-05-31 044653" src="https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/4a6b5aa7-d8cd-4fd9-9b30-a7311094f0a5">
+![2](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/8908b114-f211-46d9-a021-61e738b1689b)
 
 </details>
 
@@ -85,7 +80,7 @@ Our model for the color detection in this application is using CNN Model . We di
 <details>
 <summary>Model Flowchart</summary>
 
-<>
+![output (1)](https://github.com/ridhaagam/Capstone-Project-C23-PS361/assets/71591898/614e9778-e3c8-4733-aa28-52390c60ca0a)
 
 </details>
 
