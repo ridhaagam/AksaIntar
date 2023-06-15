@@ -34,7 +34,7 @@ Part of machine learning in this application is detecting items and detecting co
 </details>
 
 ### Dataset and Data Preparation 
-The dataset we use for this object detection model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download). This dataset contains (jumlah gambar dalam dataset) images. For modeling, we use <> images. We split the dataset into training set of <> images and testing set of <> images. And we do a rescale and augmentation on the images. 
+The dataset we use for this object detection model is "Common Objects" dataset taken in 2014. The dataset can be download in [here](https://cocodataset.org/#download).  And we do a rescale and augmentation on the images. 
 For the color detection, we use "bing image" pyhton library to download bulk of images form Bing.com.dataset and make it as a dataset for the color. The dataset can be download in <here>. For modeling, we use 2135 images. We split the dataset into training set of 1472 images and testing set of 663 images. 
 
 <details>
