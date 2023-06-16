@@ -35,7 +35,7 @@ Part of machine learning in this application is detecting items and detecting co
 
 ### Dataset and Data Preparation 
 The dataset we use for this object detection model is "Common Objects" dataset taken in 2014.  And we do a rescale and augmentation on the images. 
-For the color detection, we use "bing image" pyhton library to download bulk of images form Bing.com.dataset and make it as a dataset for the color. The dataset can be download in <here>. For modeling, we use 2135 images. We split the dataset into training set of 1472 images and testing set of 663 images. The dataset can be download in [here](https://drive.google.com/drive/folders/1O2bbBgNVZOzbu_7ICZh_25KoySXV2NZD?usp=sharing)
+For the color detection, we use "bing image" pyhton library to download bulk of images form Bing.com.dataset and make it as a dataset for the color. The dataset can be download in <here>. For modeling the color detection, we use 2135 images. We split the dataset into training set of 1472 images and testing set of 663 images. The dataset can be download in [here](https://drive.google.com/drive/folders/1O2bbBgNVZOzbu_7ICZh_25KoySXV2NZD?usp=sharing)
 
 <details>
 <summary>Dataset</summary>
