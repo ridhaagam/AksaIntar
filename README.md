@@ -103,7 +103,11 @@ Our model for the color detection in this application is using CNN Model . We di
 As the Mobile Development team, we use native Kotlin and Android Studio to create our Android app. Our responsibilities is setting up the Android app environment, designing the user interface through Figma, and implementing both object detection and color detection features for the app's functionalities. And once the application is complete, we monitor and fix any issues found to ensure the application runs as it should.
 
 ### Special Notes
-Dont forget to change the values of default_web_client_id in strings.xml with your own client id from google cloud platform,if you're confused to get it,this is the [tutorial](https://youtu.be/cN9ZV7_9FbE).And dont forget to turn on the accessibility in your device when you run it. 
+Make sure to update the "default_web_client_id" values in the "strings.xml" file with your own client ID from the Google Cloud Platform. If you're unsure how to obtain it, you can refer to this  [tutorial](https://youtu.be/cN9ZV7_9FbE). Additionally, don't forget to enable the TalkBack accessibility feature on your device before running the application.
+
+
+
+
 
  ### App Documentation
 <details>
